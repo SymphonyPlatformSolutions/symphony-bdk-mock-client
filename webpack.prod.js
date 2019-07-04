@@ -14,8 +14,8 @@ console.log('Current environment: ', currEnv);
 
 const config = {
   entry: {
-    wrapper: path.resolve(__dirname, wrapperEntry),
-    renderer: path.resolve(__dirname, rendererEntry),
+    wrapper: path.resolve(wrapperEntry),
+    renderer: path.resolve(rendererEntry),
   },
 
   output: {
@@ -86,34 +86,21 @@ const config = {
       }),
     }),
     new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' },
+      { from: './src/assets', to: 'assets' },
     ]),
     new CopyWebpackPlugin([
-      { from: 'src/assets/sass/fonts', to: 'fonts' },
+      { from: './src/assets/sass/fonts', to: 'fonts' },
     ]),
     new CopyWebpackPlugin([
-      { from: 'src/bundle.json', to: '' },
+      { from: './src/bundle.json', to: '' },
     ]),
     new CopyWebpackPlugin([
-      { from: 'src/renderer.js', to: '' },
+      { from: './src/renderer.js', to: '' },
     ]),
     new CopyWebpackPlugin([
-      { from: 'src/default-entities.js', to: '' },
+      { from: './src/default-entities.js', to: '' },
     ]),
   ],
 };
 
 module.exports = config;
-//
-// module.exports = merge(config, {
-//   mode: 'development',
-//   devtool: 'eval-source-map',
-//
-//   devServer: {
-//     inline: true,
-//     port: 4000,
-//     headers: {
-//       'Access-Control-Allow-Origin': '*'
-//     },
-//   }
-// });

@@ -3,7 +3,7 @@ const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const merge = require('webpack-merge');
 const Path = require('path');
-const Config = require('./webpack.mock');
+const Config = require('./webpack.dev');
 
 const [,, ...args] = process.argv;
 
