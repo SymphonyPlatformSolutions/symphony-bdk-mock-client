@@ -9,6 +9,7 @@ const webpack = require('webpack');
 let wrapperEntry = './src/wrapper.js';
 let currEnv = 'MOCK';
 const rendererEntry = './src/renderer-mock.js';
+const symphonyMockEntry = './src/symphony-mock.js';
 
 console.log('Current environment: ', currEnv);
 
@@ -16,6 +17,7 @@ const config = {
   entry: {
     wrapper: path.resolve(__dirname, wrapperEntry),
     renderer: path.resolve(__dirname, rendererEntry),
+    'symphony-mock': path.resolve(symphonyMockEntry),
   },
 
   output: {
@@ -72,19 +74,6 @@ const config = {
     new webpack.DefinePlugin({
       'process.env.currEnv': JSON.stringify(currEnv),
     }),
-    new webpack.DefinePlugin({
-      ENRICHER_EVENTS: JSON.stringify({
-       SAMPLE: {
-          type: 'sample',
-          json: {}
-         }
-       }),
-    }),
-    new webpack.DefinePlugin({
-      MODAL_IDS: JSON.stringify({
-        EXAMPLE_MODAL: 'example-modal',
-      }),
-    }),
     new CopyWebpackPlugin([
       { from: './src/assets', to: 'assets' },
     ]),
@@ -102,6 +91,9 @@ const config = {
     ]),
     new CopyWebpackPlugin([
       { from: './src/default-entities.js', to: '' },
+    ]),
+    new CopyWebpackPlugin([
+      { from: './external-app', to: '' },
     ]),
   ],
 };
