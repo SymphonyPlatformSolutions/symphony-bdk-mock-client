@@ -1,7 +1,7 @@
 {
   "name": "sms-dev-mock-client",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Symphony mock client",
   "main": "index.js",
   "scripts": {
     "dev:watch": "webpack-dev-server --watch --host 0.0.0.0 --disable-host-checkKIL --progress --colors --https --env.mock --config webpack.dev.js",
@@ -10,7 +10,15 @@
   "bin": {
     "sms-mock-client": "index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client.git"
+  },
+  "author": "Market Solutions",
+   "bugs": {
+    "url": "https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client/issues"
+  },
+  "homepage": "https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client#readme",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
