@@ -7,9 +7,6 @@
     "dev:watch": "webpack-dev-server --watch --host 0.0.0.0 --disable-host-checkKIL --progress --colors --https --env.mock --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js"
   },
-  "bin": {
-    "sms-mock-client": "index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client.git"

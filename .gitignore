@@ -5,7 +5,3 @@ coverage
 npm-debug.log
 node_modules
 test-report.xml
-
-# Whitelist
-dist/*
-!dist/bundle.json
