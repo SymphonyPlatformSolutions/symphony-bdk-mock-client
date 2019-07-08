@@ -183,7 +183,7 @@ workflows:
           requires:
             - sonarqube_analysis
       - publish:
-          type: approval
+          # type: approval
           requires:
             - lint_and_test
           filters:
