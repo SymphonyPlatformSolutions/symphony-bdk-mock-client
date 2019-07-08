@@ -138,7 +138,7 @@ jobs:
       - run:
           name: Publish package
           command: |
-            AUTH_USERS=($(echo $APPROVAL_USERS) | tr -d \")
+            AUTH_USERS=($(echo $APPROVAL_USERS) | tr -d \"))
             for USER in "${AUTH_USERS[@]}"; do
                 if [[ ${USER} == ${CIRCLE_USERNAME} ]]; then
                   npm publish --access private --dry-run
@@ -183,7 +183,7 @@ workflows:
           requires:
             - sonarqube_analysis
       - publish:
-          # type: approval
+          type: approval
           requires:
             - lint_and_test
           filters:
