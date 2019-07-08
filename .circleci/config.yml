@@ -138,7 +138,17 @@ jobs:
       - run:
           name: Publish package
           command: |
-            npm publish --access private --dry-run
+            echo ${APPROVAL_USERS}
+
+
+            for USERS in "${APPROVAL_USERS[@]}"; do
+                if [[ ${USERS} == \"${CIRCLE_USERNAME}\" ]]; then
+                  echo "publish"
+                  npm publish --access private --dry-run
+                  exit 0
+                fi
+            done
+            
   notify_npm_publish:
     <<: *gcp_defaults
     steps:
