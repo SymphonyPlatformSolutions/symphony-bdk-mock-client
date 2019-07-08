@@ -12,7 +12,7 @@
     "url": "git+https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client.git"
   },
   "author": "Market Solutions",
-   "bugs": {
+  "bugs": {
     "url": "https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client/issues"
   },
   "homepage": "https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client#readme",

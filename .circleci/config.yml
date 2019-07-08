@@ -17,8 +17,7 @@ jobs:
       - run:
           name: Dependencies Install
           command: |
-           sudo apt-get install -y tk8.5 expect
-           expect .circleci/install
+           npm install
       - save_cache:
           paths:
             - node_modules
@@ -27,23 +26,21 @@ jobs:
       #     name: Lint
       #     command: |
       #       npm run lint
-      - run:
-          name: Test package
-          command: |
-            npm run test
+      # - run:
+      #     name: Test package
+      #     command: |
+      #       npm run test
 
-      - run:
-          name: Run Coverage
-          command: |
-            npm run test:coverage || true
-
+      # - run:
+      #     name: Run Coverage
+      #     command: |
+      #       npm run test:coverage || true
       - persist_to_workspace:
           root: ~/project
           paths:
             - .circleci
-            - coverage
-            - test-report.xml
-
+            # - coverage
+            # - test-report.xml
   sonarqube_analysis:
     <<: *defaults
     steps:
