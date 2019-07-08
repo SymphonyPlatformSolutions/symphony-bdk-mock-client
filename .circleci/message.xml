@@ -1,13 +1,13 @@
  <messageML>
-     <div class="entity" data-entity-id="testMessage">
+     <div class="entity" data-entity-id="ciMessage">
          <card class="barStyle">
              <header>
-                 <span>${entity['testMessage'].message.header}</span>
+                 <span>${entity['ciMessage'].message.header}</span>
              </header>
-             <#if (entity['testMessage'].message.body)??>
+             <#if (entity['ciMessage'].message.body)??>
                  <body>
                      <div class="labelBackground badge">
-                         <span>${entity['testMessage'].message.body}</span>
+                         <span>${entity['ciMessage'].message.body}</span>
                      </div>
                  </body>
              </#if>
