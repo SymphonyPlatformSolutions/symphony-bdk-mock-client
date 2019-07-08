@@ -1,0 +1,16 @@
+ <messageML>
+     <div class="entity" data-entity-id="testMessage">
+         <card class="barStyle">
+             <header>
+                 <span>${entity['testMessage'].message.header}</span>
+             </header>
+             <#if (entity['testMessage'].message.body)??>
+                 <body>
+                     <div class="labelBackground badge">
+                         <span>${entity['testMessage'].message.body}</span>
+                     </div>
+                 </body>
+             </#if>
+         </card>
+     </div>
+ </messageML>
