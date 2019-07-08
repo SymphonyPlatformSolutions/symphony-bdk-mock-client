@@ -1,5 +1,5 @@
 {
-  "name": "@symphonyplatformsolutions/sms-dev-mock-client",
+  "name": "@symphonyplatformsolutions/sms-dev-tool-mock-client",
   "version": "1.0.0",
   "description": "A Symphony mock client",
   "main": "index.js",
