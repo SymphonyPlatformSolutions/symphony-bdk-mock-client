@@ -138,9 +138,9 @@ jobs:
       - run:
           name: Publish package
           command: |
-            for USERS in "${APPROVAL_USERS[@]}"; do
-                if [[ ${USERS} == ${CIRCLE_USERNAME} ]]; then
-                  echo "publish"
+            AUTH_USERS=($(echo $APPROVAL_USERS) | tr -d \")
+            for USER in "${AUTH_USERS[@]}"; do
+                if [[ ${USER} == ${CIRCLE_USERNAME} ]]; then
                   npm publish --access private --dry-run
                   exit 0
                 fi
