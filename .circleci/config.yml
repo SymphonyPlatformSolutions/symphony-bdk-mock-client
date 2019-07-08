@@ -43,7 +43,7 @@ commands:
       make_notification:
         description: Defines if notification should be sent.
         type: string
-        default: "true"      
+        default: "true"
     steps:
       - when:
           condition: << parameters.make_notification >>
@@ -103,7 +103,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project
-
       - run:
           name: SonarQube Analysis Dependencies
           command: |
@@ -122,10 +121,10 @@ jobs:
             chmod +x ./sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner
 
             ./sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner
-      - run:
-          name: Get Test Result
-          command: |
-            source ./.circleci/scripts/test-result
+      # - run:
+      #     name: Get Test Result
+      #     command: |
+      #       source ./.circleci/scripts/test-result
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -183,3 +182,6 @@ workflows:
           filters:
             branches:
               only: master
+      - notify_npm_publish:
+          requires:
+            - npm_publish
