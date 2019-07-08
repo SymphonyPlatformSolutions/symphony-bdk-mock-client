@@ -94,13 +94,12 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - .circleci
+            - ./
             # - coverage
             # - test-report.xml
   sonarqube_analysis:
     <<: *defaults
     steps:
-      - checkout
       - attach_workspace:
           at: ~/project
       - run:
@@ -128,8 +127,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-          - .circleci
-
+          - ./
   publish:
     <<: *defaults
     steps:
@@ -145,7 +143,10 @@ jobs:
                   exit 0
                 fi
             done
-            
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+          - .circleci
   notify_npm_publish:
     <<: *gcp_defaults
     steps:
@@ -178,10 +179,10 @@ workflows:
 
   npm_publish:
     jobs:
-      - sonarqube_analysis
-      - lint_and_test:
+      - lint_and_test
+      - sonarqube_analysis:
           requires:
-            - sonarqube_analysis
+            - lint_and_test
       - publish:
           # type: approval
           requires:
