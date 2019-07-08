@@ -191,7 +191,6 @@ workflows:
             branches:
               only: 
                 - master
-                - feature/npm-publish-data
       - notify_npm_publish:
           requires:
             - publish
