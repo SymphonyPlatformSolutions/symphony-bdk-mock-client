@@ -181,7 +181,9 @@ workflows:
             - lint_and_test
           filters:
             branches:
-              only: master
+              only: 
+                - master
+                - feature/npm-publish-data
       - notify_npm_publish:
           requires:
             - publish
