@@ -139,7 +139,7 @@ jobs:
             AUTH_USERS=($(echo $APPROVAL_USERS | tr -d \"))
             for USER in "${AUTH_USERS[@]}"; do
                 if [[ ${USER} == ${CIRCLE_USERNAME} ]]; then
-                  npm publish --access private --dry-run
+                  npm publish --access restricted --dry-run
                   exit 0
                 fi
             done
@@ -184,7 +184,7 @@ workflows:
           requires:
             - lint_and_test
       - publish:
-          # type: approval
+          type: approval
           requires:
             - lint_and_test
           filters:
