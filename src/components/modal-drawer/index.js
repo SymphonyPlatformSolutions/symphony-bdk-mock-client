@@ -79,7 +79,7 @@ function ModalDrawer({ closeHandler, isOpen }) {
 
     if (madeServices) {
       const enricherService = madeServices.find(el => el.name.includes('enricher'));
-      enricherService.instance.action({ entity: dialog });
+      enricherService.instance.action(dialog);
     }
 
     closeHandler();
