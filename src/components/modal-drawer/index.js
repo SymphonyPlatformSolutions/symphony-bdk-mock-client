@@ -63,7 +63,7 @@ const FloatingRightButton = styled(BlueButton)`
 
 const keyMapDialogs = Object.keys(MODAL_IDS).map(key => ({
   key,
-  value: MODAL_IDS[key],
+  value: key,
 }));
 
 
@@ -79,7 +79,7 @@ function ModalDrawer({ closeHandler, isOpen }) {
 
     if (madeServices) {
       const enricherService = madeServices.find(el => el.name.includes('enricher'));
-      enricherService.instance.action({ entity: dialog });
+      enricherService.instance.action(MODAL_IDS[dialog]);
     }
 
     closeHandler();
