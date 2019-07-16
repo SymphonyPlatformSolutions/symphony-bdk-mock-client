@@ -84,9 +84,6 @@ const config = {
       { from: './src/assets/sass/fonts', to: 'fonts' },
     ]),
     new CopyWebpackPlugin([
-      { from: './src/bundle.json', to: '' },
-    ]),
-    new CopyWebpackPlugin([
       { from: './src/renderer.js', to: '' },
     ]),
     new CopyWebpackPlugin([
