@@ -1,0 +1,16 @@
+ <messageML>
+     <div class="entity" data-entity-id="ciMessage">
+         <card class="barStyle">
+             <header>
+                 <span>${entity['ciMessage'].message.header}</span>
+             </header>
+             <#if (entity['ciMessage'].message.body)??>
+                 <body>
+                     <div class="labelBackground badge">
+                         <span>${entity['ciMessage'].message.body}</span>
+                     </div>
+                 </body>
+             </#if>
+         </card>
+     </div>
+ </messageML>
