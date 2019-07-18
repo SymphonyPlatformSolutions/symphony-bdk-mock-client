@@ -69,11 +69,18 @@ const WarningIcon = styled(Warning)`
   color: #ffff00;
   margin-right: 10px;
 `;
+
+const RENDER_ALL = 'Render all entities';
 const keyMapEntities = Object.keys(ENRICHER_EVENTS).map(key => ({
   key,
   type: ENRICHER_EVENTS[key].type,
   json: ENRICHER_EVENTS[key].json,
 }));
+keyMapEntities.push({
+  key: RENDER_ALL,
+  type: 'Render all entities',
+  json: { warning: 'This will render all entities with their respective JSON' },
+});
 
 class EntityDrawer extends React.Component {
   jsonFieldRef;
@@ -100,6 +107,14 @@ class EntityDrawer extends React.Component {
   handleOnClick = () => {
     const { submitHandler } = this.props;
     const { jsonText } = this.state;
+
+    if (this.selectRef.value === RENDER_ALL) {
+      Object.keys(ENRICHER_EVENTS).forEach(el => submitHandler(ENRICHER_EVENTS[el].type, {
+        id: JSON.stringify(ENRICHER_EVENTS[el].json),
+      }));
+      return;
+    }
+
     submitHandler(this.selectRef.value || this.textFieldRef.value, {
       id: jsonText || '{}',
     });

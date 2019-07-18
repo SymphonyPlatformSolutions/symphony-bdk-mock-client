@@ -18,17 +18,40 @@ const RendererApp = () => {
     messagesCounter += 1;
     // For Chrome, the origin property is in the event.originalEvent object.
     if (typeof event.data === 'object' && event.data.call === 'sendValue') {
-      const { template, entityJson } = event.data.value;
-      const fullHtml = renderer.render(null, null, template.template, entityJson, ['presentationML', 'messageML']);
+      const { template, entityJson, entityType } = event.data.value;
+      console.log(entityType);
+      let fullHtml;
+      try {
+        fullHtml = renderer.render(null, null, template.template, entityJson, ['presentationML', 'messageML']);
+      } catch (e) {
+        const errorMessage = `<messageML>
+        <i>Something went wrong while trying to render the message</i><br />
+        <p><i>Received template</i>:
+        ${template}
+        </p>
+        <p><i>Caught error:</i><br />
+        ${e}
+        </p>
+        </messageML>`;
+        fullHtml = renderer.render(null, null, errorMessage, {}, ['presentationML', 'messageML']);
+      }
 
       let htmlString = fullHtml.context.outerHTML;
       htmlString = htmlString.replace(
         'class="card collapsed has-body',
         `id="clickable_${messagesCounter}" class="card collapsed has-body" onclick="overrideCardCollapse('clickable_${messagesCounter}')"`,
       );
+
+      // Importantize height
+      // This..... seems really wrong.
+      const heights = [...htmlString.matchAll(/[^-]height:(.*);/g)];
+      heights.forEach((el) => {
+        htmlString = htmlString.replace(el[0], `height:${el[1]} !important; overflow: unset;`);
+      });
+
       changeMessages((prevState) => {
         messagesCounter += 1;
-        return [...prevState, htmlString];
+        return [...prevState, { htmlString, entityType }];
       });
       setTimeout(() => {
       }, 200);
@@ -42,7 +65,7 @@ const RendererApp = () => {
 
   return (
     <div>
-      {messages.map((el, index) => <WrapperMessageStack key={`wrapperMessageStack_${index}`} htmlContent={el} />)}
+      {messages.map((el, index) => <WrapperMessageStack key={`wrapperMessageStack_${index}`} htmlContent={el.htmlString} entityType={el.entityType} />)}
       <div ref={messagesEndRef} />
     </div>
   );
