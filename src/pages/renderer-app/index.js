@@ -19,7 +19,6 @@ const RendererApp = () => {
     // For Chrome, the origin property is in the event.originalEvent object.
     if (typeof event.data === 'object' && event.data.call === 'sendValue') {
       const { template, entityJson, entityType } = event.data.value;
-      console.log(entityType);
       let fullHtml;
       try {
         fullHtml = renderer.render(null, null, template.template, entityJson, ['presentationML', 'messageML']);
@@ -41,13 +40,6 @@ const RendererApp = () => {
         'class="card collapsed has-body',
         `id="clickable_${messagesCounter}" class="card collapsed has-body" onclick="overrideCardCollapse('clickable_${messagesCounter}')"`,
       );
-
-      // Importantize height
-      // This..... seems really wrong.
-      const heights = [...htmlString.matchAll(/[^-]height:(.*);/g)];
-      heights.forEach((el) => {
-        htmlString = htmlString.replace(el[0], `height:${el[1]} !important; overflow: unset;`);
-      });
 
       changeMessages((prevState) => {
         messagesCounter += 1;

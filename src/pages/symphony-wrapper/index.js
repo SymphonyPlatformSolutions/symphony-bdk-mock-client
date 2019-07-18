@@ -53,7 +53,7 @@ const SymphonyWrapper = () => {
   const [isEntityDrawerOpened, toggleEntityDrawer] = useState(false);
   const [isDialogDrawerOpened, toggleDialogDrawer] = useState(false);
 
-  const [isModalOpenned, toggleModal] = useState(false);
+  const [isModalOpened, toggleModal] = useState(false);
   const [modalOptions, setModalOptions] = useState(null);
 
   const extensionAppRef = useRef();
@@ -63,7 +63,7 @@ const SymphonyWrapper = () => {
     let errorMessage;
     let template;
     let sentJson = entityJson;
-    console.log('=========', entityType);
+
     if (!madeServices || !madeServices.length) {
       console.log('No services were made, so nothing to render the entity!');
       errorMessage = 'No services were made, so nothing to render the entity!';
@@ -120,6 +120,13 @@ const SymphonyWrapper = () => {
         width: detail.width,
       });
     });
+
+    window.addEventListener('keydown', ({ code }) => {
+      if (code === 'Escape') {
+        toggleDialogDrawer(false);
+        toggleEntityDrawer(false);
+      }
+    });
   }, []);
 
 
@@ -142,7 +149,7 @@ const SymphonyWrapper = () => {
         toggleEntityDrawer={() => toggleEntityDrawer(true)}
         toggleDialogDrawer={() => toggleDialogDrawer(true)}
       />
-      { isModalOpenned && <Modal modalOptions={modalOptions} closeHandler={() => toggleModal(false)} />}
+      { isModalOpened && <Modal modalOptions={modalOptions} closeHandler={() => toggleModal(false)} />}
       <CenterContainer>
         <WrapperTopbar />
         <CenterContainerBody>
