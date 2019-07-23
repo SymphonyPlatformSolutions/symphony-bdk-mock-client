@@ -50,8 +50,6 @@ const RendererApp = () => {
         messagesCounter += 1;
         return [...prevState, { htmlString, entityType }];
       });
-      setTimeout(() => {
-      }, 200);
     }
   };
   useEffect(() => {

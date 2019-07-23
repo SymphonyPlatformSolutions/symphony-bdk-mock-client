@@ -74,9 +74,6 @@ function ModalDrawer({ closeHandler, isOpen }) {
     const { madeServices } = window.SYMPHONY.services;
     if (!madeServices || !madeServices.length) {
       console.log('No services were made, so nothing to render the entity!');
-      setTimeout(() => {
-        handleOnClick();
-      }, 200)
       return;
     }
 

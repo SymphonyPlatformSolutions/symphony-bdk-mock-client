@@ -158,7 +158,6 @@ const SYMPHONY_MOCK = {
           return {
             listen: (eventName, callback) => {
               console.info(`Registered Listener to -> ${eventName}`);
-              setTimeout(() => callback());
             },
             addMenuItem: (...args) => {
               console.info(`Adding menu Items [${args.join(',')}]`);

@@ -2,7 +2,6 @@
 const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const merge = require('webpack-merge');
-const Path = require('path');
 var asciify = require('asciify-image');
 
 
