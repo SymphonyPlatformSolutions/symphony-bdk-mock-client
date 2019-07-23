@@ -41,6 +41,11 @@ const RendererApp = () => {
         `id="clickable_${messagesCounter}" class="card collapsed has-body" onclick="overrideCardCollapse('clickable_${messagesCounter}')"`,
       );
 
+      const replaceableHeights = [...htmlString.matchAll(/<div[^>]*([^-]height:([^;|"|\n]*))(;|")/g)];
+      replaceableHeights.forEach((el) => {
+        htmlString = htmlString.replace(el[1], el[1].replace(el[2], `${el[2]} !important; overflow: unset;`));
+      });
+
       changeMessages((prevState) => {
         messagesCounter += 1;
         return [...prevState, { htmlString, entityType }];
