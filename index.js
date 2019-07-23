@@ -3,6 +3,8 @@ const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const merge = require('webpack-merge');
 const Path = require('path');
+var asciify = require('asciify-image');
+
 
 const argv = require('yargs')
   .usage('Usage: $0 --extension-app http://localhost:4000')
@@ -49,9 +51,22 @@ const webpackConfig = merge(Config, {
 
 const server = new WebpackDevServer(Webpack(webpackConfig), options);
 
-server.listen(port, '0.0.0.0', function (err) {
-  if (err) {
-    console.log(err);
-  }
-  console.log('WebpackDevServer listening at localhost:', port);
-});
+
+var asciiConfig = {
+  fit:    'original',
+  width:  40,
+  height: 40
+};
+
+asciify('./src/assets/teste.png', asciiConfig)
+  .then((ascii) => {
+    console.log(ascii);
+    server.listen(port, '0.0.0.0', function (err) {
+      if (err) {
+        console.log(err);
+      }
+      console.log('WebpackDevServer listening at localhost:', port);
+    });
+  });
+
+

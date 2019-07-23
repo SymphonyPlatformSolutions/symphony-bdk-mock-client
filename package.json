@@ -7,7 +7,7 @@
     "dev:watch": "webpack-dev-server --watch --host 0.0.0.0 --disable-host-checkKIL --progress --colors --https --env.mock --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js"
   },
-   "bin": {
+  "bin": {
     "sms-dev-tool-mock-client": "index.js"
   },
   "repository": {
@@ -61,6 +61,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "asciify-image": "^0.1.5",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.16.0",
     "babel-plugin-module-resolver": "^3.2.0",
