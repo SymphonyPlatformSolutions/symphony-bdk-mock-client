@@ -61,7 +61,7 @@ const SYMPHONY_MOCK = {
       };
     },
     make: (str, instance) => {
-      console.info(`Service make-> ${str}`);
+      console.info(`Service make-> ${str}`, madeServices);
       madeServices.push({
         name: str,
         instance,
@@ -94,9 +94,11 @@ const SYMPHONY_MOCK = {
         case SUBSCRIPTION_TYPES.DIALOG: {
           return {
             show: (name, controller, htmlString) => {
-              const url = htmlString.match(/src=\"(.*?)\"/)[1]
+              const src = htmlString.match(/src=\"(.*?)\"/)[1];
+              const url = src.replace (/^[a-z]{4,5}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
               const width = htmlString.match(/width=\"(.*?)\"/)[1];
               const height = htmlString.match(/height=\"(.*?)\"/)[1];
+
               window.dispatchEvent(new CustomEvent('openDialog', {
                 detail: {
                   url,
@@ -305,5 +307,5 @@ const SYMPHONY_MOCK = {
     },
   ],
 };
-
+console.log('Service make-> ', window.SYMPHONY.services.madeServices, window.SYMPHONY);
 window.SYMPHONY = Object.assign({}, window.SYMPHONY, SYMPHONY_MOCK);

@@ -74,6 +74,10 @@ const SymphonyWrapper = ({bundle}) => {
       if (!enricherService) {
         console.log('No enricher service made!');
         errorMessage = 'No enricher service made!';
+        setTimeout(() => {
+          console.log('executou');
+          submitHandler(entityType, entityJson)
+        }, 200);
       } else {
         try {
           template = enricherService.instance.render(entityType, entityJson);

@@ -19,6 +19,7 @@ const ModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: #000000cc;
+  z-index: 99999;
 `;
 
 const ModalWrapper = styled.div`

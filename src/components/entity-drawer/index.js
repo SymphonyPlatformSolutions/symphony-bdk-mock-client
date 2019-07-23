@@ -70,7 +70,7 @@ const WarningIcon = styled(Warning)`
   margin-right: 10px;
 `;
 
-const RENDER_ALL = 'Render all entities';
+const RENDER_ALL = 'Render all notifications';
 const keyMapEntities = Object.keys(ENRICHER_EVENTS).map(key => ({
   key,
   type: ENRICHER_EVENTS[key].type,
@@ -78,7 +78,7 @@ const keyMapEntities = Object.keys(ENRICHER_EVENTS).map(key => ({
 }));
 keyMapEntities.push({
   key: RENDER_ALL,
-  type: 'Render all entities',
+  type: RENDER_ALL,
   json: { warning: 'This will render all entities with their respective JSON' },
 });
 
