@@ -49,7 +49,7 @@ const ExtensionAppIframe = styled.iframe`
 let rendererRef;
 let internalPointer;
 
-const SymphonyWrapper = () => {
+const SymphonyWrapper = ({bundle}) => {
   const [isEntityDrawerOpened, toggleEntityDrawer] = useState(false);
   const [isDialogDrawerOpened, toggleDialogDrawer] = useState(false);
 
@@ -134,6 +134,8 @@ const SymphonyWrapper = () => {
     clearInterval(internalPointer);
   };
 
+  const appIcon = bundle.iconUrl ? bundle.iconUrl : 'assets/app-icon.png';
+
   return (
     <Wrapper>
       {ReactDOM.createPortal(<EntityDrawer
@@ -153,7 +155,7 @@ const SymphonyWrapper = () => {
       <CenterContainer>
         <WrapperTopbar />
         <CenterContainerBody>
-          <WrapperChatWindow title="Symphony News">
+          <WrapperChatWindow icon={appIcon} title={bundle.name}>
             <ExtensionAppIframe
               ref={extensionAppRef}
               onLoad={onExtensionAppLoaded}

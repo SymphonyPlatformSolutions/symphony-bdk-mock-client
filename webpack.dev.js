@@ -89,9 +89,6 @@ const config = {
     new CopyWebpackPlugin([
       { from: './src/default-entities.js', to: '' },
     ]),
-    new CopyWebpackPlugin([
-      { from: './external-app', to: '' },
-    ]),
   ],
 };
 
@@ -101,9 +98,19 @@ module.exports = merge(config, {
 
   devServer: {
     inline: true,
-    port: 4000,
+    port: 5000,
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-  }
+    proxy: [{
+      context: ['/app.html', '/controller.bundle.js', '/app.bundle.js', '/bundle.json'],
+      target: 'https://localhost:4000',
+      secure: false,
+    }, {
+      context: ['/assets/'],
+      target: 'https://localhost:4000',
+      secure: false,
+    }
+    ],
+  },
 });
