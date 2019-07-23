@@ -53,9 +53,9 @@ const server = new WebpackDevServer(Webpack(webpackConfig), options);
 
 
 var asciiConfig = {
-  fit:    'original',
-  width:  40,
-  height: 40
+  fit:    'box',
+  width:  128,
+  height: 256
 };
 
 asciify('./src/assets/teste.png', asciiConfig)
