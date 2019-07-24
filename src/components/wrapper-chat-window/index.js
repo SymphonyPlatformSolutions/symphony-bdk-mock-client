@@ -24,6 +24,13 @@ const ChatWindowHeader = styled.div`
   height: 70px;
 `;
 
+const ChatWindownHeaderIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  transform: translateY(-5px);
+`;
+
 const ChatWindowHeaderTitle = styled.h3`
   margin: 0 0 0 10px;
 `;
@@ -48,7 +55,7 @@ const MessageBoxWrapper = styled.div`
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
   border: 1px solid #c9cbd1;
-  margin 0 24px 0 24px;
+  margin: 0 24px 0 24px;
   color: #c9cbd1;
   :hover {
     border: 2px solid #6a707c;
@@ -101,6 +108,7 @@ const IconClose = styled(Close)`
   margin-left: 8px;
 `;
 
+
 function MessageBox() {
   return (
     <MessageBoxWrapper>
@@ -126,7 +134,7 @@ const ChatWindowHeaderToolbar = styled.div`
   font-weight: 200;
 `;
 
-const WrapperChatWindow = ({ children, title, hasFooter }) => (
+const WrapperChatWindow = ({ children, title, hasFooter, icon }) => (
   <ChatWindow>
     <ChatWindowHeader>
       <ChatWindowHeaderToolbar>
@@ -134,8 +142,13 @@ const WrapperChatWindow = ({ children, title, hasFooter }) => (
         <IconExternalLink size={20} />
         <IconClose size={20} />
       </ChatWindowHeaderToolbar>
-      <ChatWindowHeaderTitle>{title}</ChatWindowHeaderTitle>
-    </ChatWindowHeader>
+      <ChatWindownHeaderIconContainer>
+        { icon && <img width={40} height={40} src={icon}/> }
+         <ChatWindowHeaderTitle>
+          {title}
+        </ChatWindowHeaderTitle>
+      </ChatWindownHeaderIconContainer>
+       </ChatWindowHeader>
     <ChatWindowBody>
       {children}
     </ChatWindowBody>
