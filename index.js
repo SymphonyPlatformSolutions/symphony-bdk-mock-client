@@ -3,7 +3,7 @@ const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const merge = require('webpack-merge');
 var asciify = require('asciify-image');
-
+const Config = require('./webpack.cli');
 
 const argv = require('yargs')
   .usage('Usage: $0 --extension-app http://localhost:4000')
@@ -11,7 +11,6 @@ const argv = require('yargs')
   .demandOption(['extension-app'])
   .argv;
 
-const Config = require('./webpack.cli');
 
 const port = 5000;
 const path = require('path');
@@ -39,7 +38,7 @@ const options = {
       context: ['/assets/'],
       target: argv.extensionApp,
       secure: false,
-    }
+    },
   ],
 };
 
@@ -53,11 +52,11 @@ const server = new WebpackDevServer(Webpack(webpackConfig), options);
 
 var asciiConfig = {
   fit:    'box',
-  width:  128,
-  height: 256
+  width: 150,
+  height: 20,
 };
 
-asciify('./src/assets/teste.png', asciiConfig)
+asciify('./src/assets/symphony-logo.png', asciiConfig)
   .then((ascii) => {
     console.log(ascii);
     server.listen(port, '0.0.0.0', function (err) {

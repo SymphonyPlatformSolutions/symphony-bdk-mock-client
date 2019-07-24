@@ -10,6 +10,13 @@
   "bin": {
     "sms-dev-tool-mock-client": "index.js"
   },
+  "files": [
+    "./README.md",
+    "./src/assets/symphony-logo.png",
+    "./dist",
+    "./index.js",
+    "./webpack.cli.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client.git"
