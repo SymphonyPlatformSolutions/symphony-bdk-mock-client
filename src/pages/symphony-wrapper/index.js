@@ -49,37 +49,60 @@ const ExtensionAppIframe = styled.iframe`
 let rendererRef;
 let internalPointer;
 
-const SymphonyWrapper = () => {
+const SymphonyWrapper = ({bundle}) => {
   const [isEntityDrawerOpened, toggleEntityDrawer] = useState(false);
   const [isDialogDrawerOpened, toggleDialogDrawer] = useState(false);
 
-  const [isModalOpenned, toggleModal] = useState(false);
+  const [isModalOpened, toggleModal] = useState(false);
   const [modalOptions, setModalOptions] = useState(null);
 
   const extensionAppRef = useRef();
 
   const submitHandler = (entityType, entityJson) => {
     const { madeServices } = window.SYMPHONY.services;
+    let errorMessage;
+    let template;
+    let sentJson = entityJson;
+
     if (!madeServices || !madeServices.length) {
       console.log('No services were made, so nothing to render the entity!');
-      return;
+      errorMessage = 'No services were made, so nothing to render the entity!';
     }
 
     if (madeServices) {
       const enricherService = madeServices.find(el => el.name.includes('enricher'));
       if (!enricherService) {
         console.log('No enricher service made!');
-        return;
+        errorMessage = 'No enricher service made!';
+      } else {
+        try {
+          template = enricherService.instance.render(entityType, entityJson);
+        } catch (e) {
+          template = {
+            template: `<messageML><i>Error on enricher</i><br />
+          <i>Tried to render</i> <b>${entityType}</b><br /><i>with the following Json:</i> <br />
+          <pre>${JSON.stringify(entityJson).replace(/\\n/g, '<br />')}</pre>
+          <hr />
+          <i>Caught error:</i> ${e}</messageML>`,
+          };
+          sentJson = {};
+        }
       }
-      const template = enricherService.instance.render(entityType, entityJson);
-      rendererRef.contentWindow.postMessage({
-        call: 'sendValue',
-        value: {
-          template,
-          entityJson,
-        },
-      }, '*');
     }
+
+    if (errorMessage) {
+      template = { template: `<messageML><i>Renderer error:</i> ${errorMessage}<br />Please reload the webpage, and try again.</messageML>` };
+      sentJson = {};
+    }
+
+    rendererRef.contentWindow.postMessage({
+      call: 'sendValue',
+      value: {
+        entityType,
+        template,
+        entityJson: sentJson,
+      },
+    }, '*');
   };
 
   useEffect(() => {
@@ -97,12 +120,21 @@ const SymphonyWrapper = () => {
         width: detail.width,
       });
     });
+
+    window.addEventListener('keydown', ({ code }) => {
+      if (code === 'Escape') {
+        toggleDialogDrawer(false);
+        toggleEntityDrawer(false);
+      }
+    });
   }, []);
 
 
   const onExtensionAppLoaded = () => {
     clearInterval(internalPointer);
   };
+
+  const appIcon = bundle.iconUrl ? bundle.iconUrl : 'assets/app-icon.png';
 
   return (
     <Wrapper>
@@ -119,18 +151,18 @@ const SymphonyWrapper = () => {
         toggleEntityDrawer={() => toggleEntityDrawer(true)}
         toggleDialogDrawer={() => toggleDialogDrawer(true)}
       />
-      { isModalOpenned && <Modal modalOptions={modalOptions} closeHandler={() => toggleModal(false)} />}
+      { isModalOpened && <Modal modalOptions={modalOptions} closeHandler={() => toggleModal(false)} />}
       <CenterContainer>
         <WrapperTopbar />
         <CenterContainerBody>
-          <WrapperChatWindow title="Symphony News">
+          <WrapperChatWindow icon={appIcon} title={bundle.name}>
             <ExtensionAppIframe
               ref={extensionAppRef}
               onLoad={onExtensionAppLoaded}
               src="app.html"
             />
           </WrapperChatWindow>
-          <WrapperChatWindow title="Enricher Test">
+          <WrapperChatWindow hasFooter title="Enricher Test">
             <ExtensionAppIframe src="renderer-app.html" ref={(ref) => { rendererRef = ref; }} />
           </WrapperChatWindow>
         </CenterContainerBody>
