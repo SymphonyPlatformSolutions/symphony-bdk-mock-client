@@ -177,9 +177,10 @@ const SYMPHONY_MOCK = {
   remote: {
     hello: () => {
       console.log('Calling Symphony Remote Hello');
+      const theme = localStorage.getItem('theme-name');
       return new Promise(Resolve => Resolve({
         themeV2: {
-          name: 'mock-name',
+          name:  theme ? theme : 'light',
           size: '18px',
         },
       }));
