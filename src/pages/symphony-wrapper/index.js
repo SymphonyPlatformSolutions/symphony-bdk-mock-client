@@ -55,6 +55,7 @@ const SymphonyWrapper = ({bundle}) => {
 
   const [isModalOpened, toggleModal] = useState(false);
   const [modalOptions, setModalOptions] = useState(null);
+  const [iframeKey, setIframeKey ] = useState(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: 111 }))}`);
 
   const extensionAppRef = useRef();
 
@@ -129,13 +130,34 @@ const SymphonyWrapper = ({bundle}) => {
     });
   }, []);
 
+  const changeTheme = () => {
+    const isLight = localStorage.getItem('theme-name') === 'light' ? true: false;
+    const themeColor = isLight ? 'dark' :'light';
+    localStorage.setItem('theme-name', themeColor);
+    setIframeKey(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: Math.random()*100 }))}`);
+     internalPointer = setInterval(() => {
+      if (extensionAppRef.current.contentWindow) {
+        extensionAppRef.current.contentWindow.SYMPHONY = Object.assign({}, window.SYMPHONY);
+        extensionAppRef.current.contentWindow.themeColor = themeColor;
+      }
+    }, 1);
+
+    window.addEventListener('openDialog', ({ detail }) => {
+      toggleModal(true);
+      setModalOptions({
+        url: detail.url,
+        height: detail.height,
+        width: detail.width,
+      });
+    });
+  };
 
   const onExtensionAppLoaded = () => {
     clearInterval(internalPointer);
   };
 
   const appIcon = bundle.iconUrl ? bundle.iconUrl : 'assets/app-icon.png';
-
+  console.log(iframeKey)
   return (
     <Wrapper>
       {ReactDOM.createPortal(<EntityDrawer
@@ -155,11 +177,11 @@ const SymphonyWrapper = ({bundle}) => {
       <CenterContainer>
         <WrapperTopbar />
         <CenterContainerBody>
-          <WrapperChatWindow icon={appIcon} title={bundle.name}>
+          <WrapperChatWindow icon={appIcon} title={bundle.name} onThemeChanged={changeTheme}>
             <ExtensionAppIframe
               ref={extensionAppRef}
               onLoad={onExtensionAppLoaded}
-              src="app.html"
+              src={iframeKey}
             />
           </WrapperChatWindow>
           <WrapperChatWindow hasFooter title="Enricher Test">
