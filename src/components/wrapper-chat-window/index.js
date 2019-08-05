@@ -5,6 +5,7 @@ import { Attachment, MusicNote } from 'styled-icons/material';
 import { Smiley } from 'styled-icons/octicons';
 import { Pin } from 'styled-icons/boxicons-solid';
 import { ExternalLink, Close } from 'styled-icons/evil';
+import { ColorLens } from 'styled-icons/material';
 
 const ChatWindow = styled.div`
   display: grid;
@@ -108,6 +109,13 @@ const IconClose = styled(Close)`
   margin-left: 8px;
 `;
 
+const IconColorLens = styled(ColorLens)`
+ margin-left: 8px;
+ &:hover {
+  color: #29b6f6;
+ }
+`;
+
 
 function MessageBox() {
   return (
@@ -134,10 +142,11 @@ const ChatWindowHeaderToolbar = styled.div`
   font-weight: 200;
 `;
 
-const WrapperChatWindow = ({ children, title, hasFooter, icon }) => (
+const WrapperChatWindow = ({ children, title, hasFooter, icon, onThemeChanged }) => (
   <ChatWindow>
     <ChatWindowHeader>
       <ChatWindowHeaderToolbar>
+        <IconColorLens size={20} onClick={onThemeChanged} />
         <IconPin size={20} />
         <IconExternalLink size={20} />
         <IconClose size={20} />
