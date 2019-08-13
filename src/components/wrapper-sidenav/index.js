@@ -247,6 +247,7 @@ const WrapperSidenav = (props) => {
     </SideNav>
   );
 };
+
 WrapperSidenav.propTypes = {
   toggleEntityDrawer: PropTypes.func.isRequired,
   toggleDialogDrawer: PropTypes.func.isRequired,

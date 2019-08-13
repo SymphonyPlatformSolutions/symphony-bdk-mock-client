@@ -107,6 +107,10 @@ const IconExternalLink = styled(ExternalLink)`
 `;
 const IconClose = styled(Close)`
   margin-left: 8px;
+  &:hover {
+    color: black;
+    transform: scale(1.1);
+  }
 `;
 
 const IconColorLens = styled(ColorLens)`
@@ -142,14 +146,14 @@ const ChatWindowHeaderToolbar = styled.div`
   font-weight: 200;
 `;
 
-const WrapperChatWindow = ({ children, title, hasFooter, icon, onThemeChanged }) => (
+const WrapperChatWindow = ({ children, title, hasFooter, icon, onThemeChanged, onChatClosed }) => (
   <ChatWindow>
     <ChatWindowHeader>
       <ChatWindowHeaderToolbar>
-        <IconColorLens size={20} onClick={onThemeChanged} />
+        { onThemeChanged && <IconColorLens size={20} onClick={onThemeChanged} /> }
         <IconPin size={20} />
         <IconExternalLink size={20} />
-        <IconClose size={20} />
+        <IconClose size={20} onClick={onChatClosed}/>
       </ChatWindowHeaderToolbar>
       <ChatWindownHeaderIconContainer>
         { icon && <img width={40} height={40} src={icon}/> }

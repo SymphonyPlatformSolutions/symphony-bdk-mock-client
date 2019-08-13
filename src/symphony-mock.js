@@ -180,7 +180,7 @@ const SYMPHONY_MOCK = {
       const theme = localStorage.getItem('theme-name');
       return new Promise(Resolve => Resolve({
         themeV2: {
-          name:  theme ? theme : 'light',
+          name:  theme ? theme : 'LIGHT',
           size: '18px',
         },
       }));
