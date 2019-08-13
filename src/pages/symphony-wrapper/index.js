@@ -52,6 +52,8 @@ let internalPointer;
 const SymphonyWrapper = ({bundle}) => {
   const [isEntityDrawerOpened, toggleEntityDrawer] = useState(false);
   const [isDialogDrawerOpened, toggleDialogDrawer] = useState(false);
+  const [ isEnricherClosed , setCloseEnricher ] = useState(false);
+  const [ isAppClosed, setAppClosed ] = useState(false);
 
   const [isModalOpened, toggleModal] = useState(false);
   const [modalOptions, setModalOptions] = useState(null);
@@ -131,8 +133,8 @@ const SymphonyWrapper = ({bundle}) => {
   }, []);
 
   const changeTheme = () => {
-    const isLight = localStorage.getItem('theme-name') === 'light' ? true: false;
-    const themeColor = isLight ? 'dark' :'light';
+    const isLight = localStorage.getItem('theme-name') === 'LIGHT' ? true: false;
+    const themeColor = isLight ? 'DARK' :'LIGHT';
     localStorage.setItem('theme-name', themeColor);
     setIframeKey(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: Math.random()*100 }))}`);
      internalPointer = setInterval(() => {
@@ -177,16 +179,23 @@ const SymphonyWrapper = ({bundle}) => {
       <CenterContainer>
         <WrapperTopbar />
         <CenterContainerBody>
-          <WrapperChatWindow icon={appIcon} title={bundle.name} onThemeChanged={changeTheme}>
-            <ExtensionAppIframe
-              ref={extensionAppRef}
+          { !isAppClosed && <WrapperChatWindow
+            icon={appIcon}
+            title={bundle.name}
+            onChatClosed={() => setAppClosed(!isAppClosed)}
+            onThemeChanged={changeTheme}>
+            {iframeKey && <ExtensionAppIframe
+              ref={(ref) => extensionAppRef.current = ref}
               onLoad={onExtensionAppLoaded}
               src={iframeKey}
-            />
-          </WrapperChatWindow>
-          <WrapperChatWindow hasFooter title="Enricher Test">
+            /> }
+          </WrapperChatWindow> }
+          { !isEnricherClosed && <WrapperChatWindow
+            title="Enricher Test"
+            hasFooter
+            onChatClosed={() => setCloseEnricher(!isEnricherClosed)}>
             <ExtensionAppIframe src="renderer-app.html" ref={(ref) => { rendererRef = ref; }} />
-          </WrapperChatWindow>
+          </WrapperChatWindow> }
         </CenterContainerBody>
       </CenterContainer>
     </Wrapper>
