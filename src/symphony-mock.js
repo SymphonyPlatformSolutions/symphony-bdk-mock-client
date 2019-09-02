@@ -95,7 +95,7 @@ const SYMPHONY_MOCK = {
           return {
             show: (name, controller, htmlString) => {
               const src = htmlString.match(/src=\"(.*?)\"/)[1];
-              const url = src.replace (/^[a-z]{4,5}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
+              const url = src.replace(/^[a-z]{4,5}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
               const width = htmlString.match(/width=\"(.*?)\"/)[1];
               const height = htmlString.match(/height=\"(.*?)\"/)[1];
 
@@ -179,8 +179,9 @@ const SYMPHONY_MOCK = {
       console.log('Calling Symphony Remote Hello');
       const theme = localStorage.getItem('theme-name');
       return new Promise(Resolve => Resolve({
+        pod: 1234,
         themeV2: {
-          name:  theme ? theme : 'LIGHT',
+          name: theme || 'LIGHT',
           size: '18px',
         },
       }));
