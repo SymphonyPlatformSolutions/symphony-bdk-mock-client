@@ -86,6 +86,9 @@ const config = {
     new CopyWebpackPlugin([
       { from: './src/default-entities.js', to: '' },
     ]),
+    new CopyWebpackPlugin([
+      { from: './src/elements-mock.js', to: '' },
+    ]),
   ],
 };
 
