@@ -3,10 +3,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import AceEditor from 'react-ace';
-import 'brace/mode/json';
-import 'brace/theme/twilight';
 import { Warning } from 'styled-icons/material';
+import Editor from '../editor';
 import { BlueButton } from '../commons';
 
 const DrawerModal = styled.div`
@@ -88,13 +86,13 @@ class EntityDrawer extends React.Component {
   selectRef;
 
   state = {
-    jsonText: JSON.stringify(keyMapEntities[0].json, 0, 4),
+    jsonText: JSON.stringify(keyMapEntities[0].json, 0, 2),
   };
 
   handleSelectChange = ({ target }) => {
     const { selectedIndex } = target;
     this.setState({
-      jsonText: JSON.stringify(keyMapEntities[selectedIndex].json, 0, 4),
+      jsonText: JSON.stringify(keyMapEntities[selectedIndex].json, 0, 2),
     });
   };
 
@@ -156,26 +154,7 @@ class EntityDrawer extends React.Component {
           </StyledSelect>
           <hr />
           <h4>Entity JSON</h4>
-          <AceEditor
-            placeholder="Placeholder Text"
-            mode="json"
-            theme="twilight"
-            name="enricher"
-            onChange={this.handleJsonChange}
-            fontSize={14}
-            showPrintMargin
-            showGutter
-            highlightActiveLine
-            wrapEnabled
-            value={jsonText}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: true,
-              tabSize: 2,
-            }}
-          />
+          <Editor name="enricher" value={jsonText} onChange={this.handleJsonChange} />
           <FloatingRightButton type="button" onClick={this.handleOnClick}>
             Render Entity
           </FloatingRightButton>

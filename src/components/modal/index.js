@@ -43,6 +43,7 @@ function Modal({ modalOptions, closeHandler }) {
   const iframeRef = useRef();
 
   useEffect(() => {
+    window.SYMPHONY.mockHelper.setModalHandler(closeHandler);
     internalPointer = setInterval(() => {
       if (iframeRef.current) {
         iframeRef.current.contentWindow.SYMPHONY = Object.assign({}, window.SYMPHONY);
@@ -52,13 +53,6 @@ function Modal({ modalOptions, closeHandler }) {
 
   const closeIframe = () => {
     clearInterval(internalPointer);
-    iframeRef.current.contentWindow.SYMPHONY.services = {
-      subscribe: () => ({
-        close: () => {
-          closeHandler();
-        },
-      }),
-    };
   };
   return (
     <ModalContainer>
@@ -69,7 +63,8 @@ function Modal({ modalOptions, closeHandler }) {
           height={modalOptions.height}
           ref={iframeRef}
           src={modalOptions.url}
-          onLoad={closeIframe} />
+          onLoad={closeIframe}
+        />
       </ModalWrapper>
     </ModalContainer>
   );

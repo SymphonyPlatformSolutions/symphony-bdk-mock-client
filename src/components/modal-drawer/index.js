@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { BlueButton } from '../commons';
+import Editor from '../editor';
 
 
 const DialogDrawer = styled.div`
@@ -54,10 +54,14 @@ const StyledSelect = styled.select`
   padding: 5px;
 `;
 
+const ButtonBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+`;
+
 const FloatingRightButton = styled(BlueButton)`
-  margin: 10px 0 0 0;
-  position: absolute;
-  right: 15px;
   width: 10rem;
 `;
 
@@ -69,9 +73,10 @@ const keyMapDialogs = Object.keys(MODAL_IDS).map(key => ({
 
 function ModalDrawer({ closeHandler, isOpen }) {
   const [dialog, setDialog] = useState(keyMapDialogs[0].value);
+  const [jsonText, changeJsonText] = useState(JSON.stringify(MODAL_IDS[keyMapDialogs[0].value].entityData, 0, 2));
 
   const handleOnClick = () => {
-    const { madeServices } = window.SYMPHONY.services;
+    const madeServices = window.SYMPHONY.mockHelper.getMadeServices();
     if (!madeServices || !madeServices.length) {
       console.log('No services were made, so nothing to render the entity!');
       return;
@@ -79,7 +84,7 @@ function ModalDrawer({ closeHandler, isOpen }) {
 
     if (madeServices) {
       const enricherService = madeServices.find(el => el.name.includes('enricher'));
-      enricherService.instance.action(MODAL_IDS[dialog]);
+      enricherService.instance.action({ ...MODAL_IDS[dialog], entityData: JSON.parse(jsonText) });
     }
 
     closeHandler();
@@ -96,19 +101,28 @@ function ModalDrawer({ closeHandler, isOpen }) {
           <CloseButton type="button" onClick={closeHandler}>x</CloseButton>
         </TopContainer>
         <h4>Select Dialog to Open</h4>
-        <StyledSelect onChange={({ target }) => setDialog(target.value)}>
+        <StyledSelect onChange={({ target }) => {
+          setDialog(target.value);
+          changeJsonText(JSON.stringify(MODAL_IDS[target.value].entityData, 0, 2));
+        }}
+        >
           {
              keyMapDialogs.map(
                entry => <option key={entry.key} value={entry.value}>{entry.key}</option>,
              )
            }
         </StyledSelect>
-        <FloatingRightButton
-          type="button"
-          onClick={handleOnClick}
-        >
-             Open Dialog
-        </FloatingRightButton>
+        <hr />
+        <h4>Entity JSON</h4>
+        <Editor name="modal" value={jsonText} onChange={changeJsonText} />
+        <ButtonBox>
+          <FloatingRightButton
+            type="button"
+            onClick={handleOnClick}
+          >
+              Open Dialog
+          </FloatingRightButton>
+        </ButtonBox>
       </Container>
     </DialogDrawer>
   );
