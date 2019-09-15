@@ -49,20 +49,20 @@ const ExtensionAppIframe = styled.iframe`
 let rendererRef;
 let internalPointer;
 
-const SymphonyWrapper = ({bundle}) => {
+const SymphonyWrapper = ({ bundle }) => {
   const [isEntityDrawerOpened, toggleEntityDrawer] = useState(false);
   const [isDialogDrawerOpened, toggleDialogDrawer] = useState(false);
-  const [ isEnricherClosed , setCloseEnricher ] = useState(false);
-  const [ isAppClosed, setAppClosed ] = useState(false);
+  const [isEnricherClosed, setCloseEnricher] = useState(false);
+  const [isAppClosed, setAppClosed] = useState(false);
 
   const [isModalOpened, toggleModal] = useState(false);
   const [modalOptions, setModalOptions] = useState(null);
-  const [iframeKey, setIframeKey ] = useState(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: 111 }))}`);
+  const [iframeKey, setIframeKey] = useState(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: 111 }))}`);
 
   const extensionAppRef = useRef();
 
   const submitHandler = (entityType, entityJson) => {
-    const { madeServices } = window.SYMPHONY.services;
+    const madeServices = window.SYMPHONY.mockHelper.getMadeServices();
     let errorMessage;
     let template;
     let sentJson = entityJson;
@@ -133,11 +133,11 @@ const SymphonyWrapper = ({bundle}) => {
   }, []);
 
   const changeTheme = () => {
-    const isLight = localStorage.getItem('theme-name') === 'LIGHT' ? true: false;
-    const themeColor = isLight ? 'DARK' :'LIGHT';
+    const isLight = localStorage.getItem('theme-name') === 'LIGHT';
+    const themeColor = isLight ? 'DARK' : 'LIGHT';
     localStorage.setItem('theme-name', themeColor);
-    setIframeKey(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: Math.random()*100 }))}`);
-     internalPointer = setInterval(() => {
+    setIframeKey(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: Math.random() * 100 }))}`);
+    internalPointer = setInterval(() => {
       if (extensionAppRef.current.contentWindow) {
         extensionAppRef.current.contentWindow.SYMPHONY = Object.assign({}, window.SYMPHONY);
         extensionAppRef.current.contentWindow.themeColor = themeColor;
@@ -159,7 +159,7 @@ const SymphonyWrapper = ({bundle}) => {
   };
 
   const appIcon = bundle.iconUrl ? bundle.iconUrl : 'assets/app-icon.png';
-  console.log(iframeKey)
+  console.log(iframeKey);
   return (
     <Wrapper>
       {ReactDOM.createPortal(<EntityDrawer
@@ -179,23 +179,31 @@ const SymphonyWrapper = ({bundle}) => {
       <CenterContainer>
         <WrapperTopbar />
         <CenterContainerBody>
-          { !isAppClosed && <WrapperChatWindow
+          { !isAppClosed && (
+          <WrapperChatWindow
             icon={appIcon}
             title={bundle.name}
             onChatClosed={() => setAppClosed(!isAppClosed)}
-            onThemeChanged={changeTheme}>
-            {iframeKey && <ExtensionAppIframe
-              ref={(ref) => extensionAppRef.current = ref}
+            onThemeChanged={changeTheme}
+          >
+            {iframeKey && (
+            <ExtensionAppIframe
+              ref={ref => extensionAppRef.current = ref}
               onLoad={onExtensionAppLoaded}
               src={iframeKey}
-            /> }
-          </WrapperChatWindow> }
-          { !isEnricherClosed && <WrapperChatWindow
+            />
+            ) }
+          </WrapperChatWindow>
+          ) }
+          { !isEnricherClosed && (
+          <WrapperChatWindow
             title="Enricher Test"
             hasFooter
-            onChatClosed={() => setCloseEnricher(!isEnricherClosed)}>
+            onChatClosed={() => setCloseEnricher(!isEnricherClosed)}
+          >
             <ExtensionAppIframe src="renderer-app.html" ref={(ref) => { rendererRef = ref; }} />
-          </WrapperChatWindow> }
+          </WrapperChatWindow>
+          ) }
         </CenterContainerBody>
       </CenterContainer>
     </Wrapper>

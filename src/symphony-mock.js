@@ -1,4 +1,5 @@
 import Service from './service';
+import singletonHelper from './mock-helper';
 
 const rawRooms = [{
   name: 'Room A', threadId: 'abc/def//ghi+jkl==', memberAddUserEnabled: true, userIsOwner: true, publicRoom: false,
@@ -44,14 +45,13 @@ const SUBSCRIPTION_TYPES = {
   EXTENDED_USER_INFO: 'extended-user-info',
 };
 
-const madeServices = [];
-
 window.env = {};
 
 const SYMPHONY_MOCK = {
+  isMock: true,
+  mockHelper: singletonHelper,
   services: {
     makeAnonymousService: (...args) => new Service(),
-    madeServices,
     register: (str) => {
       console.info(`Registering service -> ${str}`);
       return {
@@ -61,8 +61,8 @@ const SYMPHONY_MOCK = {
       };
     },
     make: (str, instance) => {
-      console.info(`Service make-> ${str}`, madeServices);
-      madeServices.push({
+      console.info(`Service make-> ${str}`, singletonHelper.getMadeServices());
+      singletonHelper.addToMadeServices({
         name: str,
         instance,
       });
@@ -110,6 +110,7 @@ const SYMPHONY_MOCK = {
               }));
               console.warn(`Requesting to open dialog named as -> ${name}`);
             },
+            close: singletonHelper.getModalHandler(),
           };
         }
 
@@ -186,6 +187,7 @@ const SYMPHONY_MOCK = {
         },
       }));
     },
+    isMock: true,
   },
   application: {
     connect: (...args) => {
@@ -308,5 +310,5 @@ const SYMPHONY_MOCK = {
     },
   ],
 };
-console.log('Service make-> ', window.SYMPHONY.services.madeServices, window.SYMPHONY);
+
 window.SYMPHONY = Object.assign({}, window.SYMPHONY, SYMPHONY_MOCK);
