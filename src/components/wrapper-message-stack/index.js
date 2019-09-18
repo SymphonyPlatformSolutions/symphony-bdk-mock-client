@@ -1,19 +1,17 @@
 import React from 'react';
+import { EntityTitle } from './styles';
 import './symphony.scss';
 import './chat-module.css';
 
 /**
  * FILE TO BE IMPLEMENTED.
  */
+
 const WrapperMessageStack = props => (
   <div>
-    <div style={{
-      opacity: 0.8,
-      fontFamily: 'SymphonyLato,"Hiragino Kaku Gothic Pro",Meiryo,"Yu Gothic Medium",sans-serif',
-      marginTop: '10px',
-    }}
-    >{props.entityType}
-    </div>
+    <EntityTitle>
+      {props.entityType}
+    </EntityTitle>
     <div id="rendered-content" className="rendered-content with-blue-border">
       <div className="rendered-content-container contrast theme-color-grey trader twentyfour-hour-with-sec-time light condensed">
         <div id="main-content-wrapper" className="contrast light condensed">

@@ -1,13 +1,29 @@
 import Service from './service';
 import singletonHelper from './mock-helper';
 
-const rawRooms = [{
-  name: 'Room A', threadId: 'abc/def//ghi+jkl==', memberAddUserEnabled: true, userIsOwner: true, publicRoom: false,
-}, {
-  name: 'Room B', threadId: 'abc/def//ghi+123==', memberAddUserEnabled: false, userIsOwner: false, publicRoom: false,
-}, {
-  name: 'Room C', threadId: 'abc/def//ghi+456==', memberAddUserEnabled: true, userIsOwner: false, publicRoom: true,
-}];
+const rawRooms = [
+  {
+    name: 'Room A',
+    threadId: 'abc/def//ghi+jkl==',
+    memberAddUserEnabled: true,
+    userIsOwner: true,
+    publicRoom: false,
+  },
+  {
+    name: 'Room B',
+    threadId: 'abc/def//ghi+123==',
+    memberAddUserEnabled: false,
+    userIsOwner: false,
+    publicRoom: false,
+  },
+  {
+    name: 'Room C',
+    threadId: 'abc/def//ghi+456==',
+    memberAddUserEnabled: true,
+    userIsOwner: false,
+    publicRoom: true,
+  },
+];
 
 const userContacts = new Map();
 const jeanLuc = {
@@ -51,7 +67,7 @@ const SYMPHONY_MOCK = {
   isMock: true,
   mockHelper: singletonHelper,
   services: {
-    makeAnonymousService: (...args) => new Service(),
+    makeAnonymousService: () => new Service(),
     register: (str) => {
       console.info(`Registering service -> ${str}`);
       return {
@@ -94,23 +110,33 @@ const SYMPHONY_MOCK = {
         case SUBSCRIPTION_TYPES.DIALOG: {
           return {
             show: (name, controller, htmlString) => {
-              const src = htmlString.match(/src=\"(.*?)\"/)[1];
-              const url = src.replace(/^[a-z]{4,5}\:\/{2}[a-z]{1,}\:[0-9]{1,4}.(.*)/, '$1');
-              const width = htmlString.match(/width=\"(.*?)\"/)[1];
-              const height = htmlString.match(/height=\"(.*?)\"/)[1];
+              const src = htmlString.match(/src="(.*?)"/)[1];
+              const url = src.replace(
+                /^[a-z]{4,5}:\/{2}[a-z]{1,}:[0-9]{1,4}.(.*)/,
+                '$1',
+              );
+              const width = htmlString.match(/width="(.*?)"/)[1];
+              const height = htmlString.match(/height="(.*?)"/)[1];
 
-              window.dispatchEvent(new CustomEvent('openDialog', {
-                detail: {
-                  url,
-                  width,
-                  height,
-                },
-                bubbles: true,
-                cancelable: true,
-              }));
+              window.dispatchEvent(
+                new CustomEvent('openDialog', {
+                  detail: {
+                    url,
+                    width,
+                    height,
+                  },
+                  bubbles: true,
+                  cancelable: true,
+                }),
+              );
               console.warn(`Requesting to open dialog named as -> ${name}`);
             },
-            close: singletonHelper.getModalHandler(),
+            close: () => {
+              const handler = singletonHelper.getModalHandler();
+              if (handler) {
+                setTimeout(handler, 50);
+              }
+            },
           };
         }
 
@@ -138,7 +164,7 @@ const SYMPHONY_MOCK = {
 
         case SUBSCRIPTION_TYPES.ACCOUNT: {
           return {
-            getPodId: () => (''),
+            getPodId: () => '',
             getDesktopSettings: () => ({
               activeMode: '',
               fontSize: 'normal',
@@ -157,7 +183,7 @@ const SYMPHONY_MOCK = {
 
         default: {
           return {
-            listen: (eventName, callback) => {
+            listen: (eventName) => {
               console.info(`Registered Listener to -> ${eventName}`);
             },
             addMenuItem: (...args) => {
@@ -246,7 +272,8 @@ const SYMPHONY_MOCK = {
         {
           id: 5,
           status: false,
-          text: 'Commander Willian Riker, LT Commander Data, LT La forge, LT La Worf, Counselor Troi',
+          text:
+            'Commander Willian Riker, LT Commander Data, LT La forge, LT La Worf, Counselor Troi',
           icon: null,
         },
       ],
