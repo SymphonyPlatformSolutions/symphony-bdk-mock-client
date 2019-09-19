@@ -136,6 +136,10 @@ export const SideNavPanelInnerContainer = styled.div`
 export const SideNavPresenceContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: ${({ isFunctional }) => (isFunctional ? 'pointer' : 'default')};
+  :hover {
+    ${({ isFunctional }) => (isFunctional ? 'background-color: rgba(255,255,255, 0.15);' : null)}
+  }
 `;
 export const SideNavPresenceText = styled.span`
   white-space: nowrap; 

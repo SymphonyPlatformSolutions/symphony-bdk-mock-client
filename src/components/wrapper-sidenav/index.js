@@ -24,11 +24,13 @@ import {
   UserNameWrapper,
 } from './styles';
 
-function SideNavChatPresence({ status, text, icon }) {
+function SideNavChatPresence({
+  status, text, icon, handler,
+}) {
   const statusIcon = status === null ? null : status ? <AvailableStatus /> : <AwayStatus />;
   const hasIcon = icon !== null ? `url("${icon}")` : null;
   return (
-    <SideNavPresenceContainer>
+    <SideNavPresenceContainer isFunctional={!!handler} onClick={handler}>
       {hasIcon && <SideNavPresenceIcon url={hasIcon} />}
       {statusIcon}
       <SideNavPresenceText>{text}</SideNavPresenceText>
@@ -40,12 +42,55 @@ SideNavChatPresence.propTypes = {
   status: PropTypes.bool,
   text: PropTypes.string,
   icon: PropTypes.string,
+  handler: PropTypes.func,
 };
 
 SideNavChatPresence.defaultProps = {
   status: false,
   text: '',
   icon: '',
+  handler: null,
+};
+
+const STATIC_SIDE_NAV = {
+  signals: {
+    id: 1,
+    label: 'SIGNALS',
+    hasAdd: true,
+    list: [
+      {
+        id: 0,
+        status: null,
+        text: 'Keywords',
+        icon: null,
+      },
+      {
+        id: 1,
+        status: null,
+        text: 'All Following',
+        icon: null,
+      },
+    ],
+  },
+  invites: {
+    id: 3,
+    label: 'INVITES',
+    hasAdd: true,
+    list: [
+      {
+        id: 0,
+        status: null,
+        text: 'Create Team',
+        icon: null,
+      },
+      {
+        id: 1,
+        status: null,
+        text: 'Invite Contacts',
+        icon: null,
+      },
+    ],
+  },
 };
 
 function SideNavPanels({ label, hasAdd, list }) {
@@ -79,7 +124,37 @@ SideNavPanels.defaultProps = {
 };
 
 const WrapperSidenav = (props) => {
-  const { toggleEntityDrawer, toggleDialogDrawer } = props;
+  const {
+    toggleEntityDrawer,
+    toggleDialogDrawer,
+    appOpenHandler,
+    rendererOpenHandler,
+    appIcon,
+    appName,
+  } = props;
+
+  const APPS = {
+    id: 2,
+    label: 'APPLICATIONS (click here!)',
+    hasAdd: true,
+    list: [
+      {
+        id: 0,
+        status: null,
+        text: appName,
+        icon: appIcon,
+        handler: appOpenHandler,
+      },
+      {
+        id: 1,
+        status: null,
+        text: 'Renderer',
+        icon: null,
+        handler: rendererOpenHandler,
+      },
+    ],
+  };
+
   return (
     <SideNav>
       <AvatarWrap>
@@ -100,6 +175,9 @@ const WrapperSidenav = (props) => {
       {window.SYMPHONY.chats.map(entry => (
         <SideNavPanels key={entry.id} {...entry} />
       ))}
+      <SideNavPanels key="signals" {...STATIC_SIDE_NAV.signals} />
+      <SideNavPanels key="applications" {...APPS} />
+      <SideNavPanels key="invites" {...STATIC_SIDE_NAV.invites} />
       <DrawerButtonContainer>
         <BlueButton type="button" onClick={toggleEntityDrawer}>
           Open Entity Drawer
@@ -117,6 +195,14 @@ const WrapperSidenav = (props) => {
 WrapperSidenav.propTypes = {
   toggleEntityDrawer: PropTypes.func.isRequired,
   toggleDialogDrawer: PropTypes.func.isRequired,
+  appOpenHandler: PropTypes.func.isRequired,
+  rendererOpenHandler: PropTypes.func.isRequired,
+  appIcon: PropTypes.string,
+  appName: PropTypes.string,
+};
+WrapperSidenav.defaultProps = {
+  appIcon: null,
+  appName: 'My App',
 };
 
 export default WrapperSidenav;
