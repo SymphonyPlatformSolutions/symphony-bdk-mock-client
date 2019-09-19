@@ -148,7 +148,7 @@ function overrideCardCollapse(id) {
   }
 }
 
-function overrideActionClick(e, actionObject) {  
+function overrideActionClick(e, actionObject) {
   window.parent.dispatchEvent(
     new CustomEvent('getAction', {
       detail: JSON.parse(decodeURIComponent(actionObject)),
