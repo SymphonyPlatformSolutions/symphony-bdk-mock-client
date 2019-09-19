@@ -21,7 +21,7 @@ const RendererApp = () => {
       const { template, entityJson, entityType } = event.data.value;
       let fullHtml;
       try {
-        fullHtml = renderer.render(null, null, template.template, entityJson, ['presentationML', 'messageML']);
+        fullHtml = renderer.render(null, null, template.template, { ...entityJson, ...template.data }, ['presentationML', 'messageML']);
       } catch (e) {
         const errorMessage = `<messageML>
         <i>Something went wrong while trying to render the message</i><br />
@@ -34,8 +34,8 @@ const RendererApp = () => {
         </messageML>`;
         fullHtml = renderer.render(null, null, errorMessage, {}, ['presentationML', 'messageML']);
       }
-
       let htmlString = fullHtml.context.outerHTML;
+      // Add clickable collapse to card
       htmlString = htmlString.replace(
         'class="card collapsed has-body',
         `id="clickable_${messagesCounter}" class="card collapsed has-body" onclick="overrideCardCollapse('clickable_${messagesCounter}')"`,
@@ -44,6 +44,17 @@ const RendererApp = () => {
       const replaceableHeights = [...htmlString.matchAll(/<div[^>]*([^-]height:([^;|"|\n]*))(;|")/g)];
       replaceableHeights.forEach((el) => {
         htmlString = htmlString.replace(el[1], el[1].replace(el[2], `${el[2]} !important; overflow: unset;`));
+      });
+      // Add clickable event to action
+      const keyPositions = Object.keys(template.data).map(key => ({
+        place: htmlString.match(new RegExp(`<span class="action-label">${template.data[key].label}<\/span>`)).index,
+        key,
+      }));
+      // Sort actions in order of appearance to associate the correct onclick events
+      keyPositions.sort((a, b) => a.place - b.place);
+      keyPositions.forEach((el) => {
+        htmlString = htmlString.replace(/class="entity-action"(?! onclick)/,
+          `class="entity-action" onclick="overrideActionClick(event, '${encodeURIComponent(JSON.stringify(template.data[el.key].data))}');"`);
       });
 
       changeMessages((prevState) => {

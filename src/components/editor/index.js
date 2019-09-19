@@ -1,5 +1,6 @@
 import React from 'react';
 import AceEditor from 'react-ace';
+import PropTypes from 'prop-types';
 import 'brace/mode/json';
 import 'brace/theme/twilight';
 
@@ -28,6 +29,12 @@ const Editor = (props) => {
       }}
     />
   );
+};
+
+Editor.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default Editor;

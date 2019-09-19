@@ -8,8 +8,8 @@ const webpack = require('webpack');
 
 const wrapperEntry = './src/wrapper.js';
 const currEnv = 'MOCK';
-const rendererEntry = './src/renderer-mock.js';
-const symphonyMockEntry = './src/symphony-mock.js';
+const rendererEntry = './src/environment-builders/renderer-mock.js';
+const symphonyMockEntry = './src/environment-builders/symphony-mock.js';
 
 console.log('Current environment: ', currEnv);
 
@@ -81,10 +81,13 @@ const config = {
       { from: './src/assets/sass/fonts', to: 'fonts' },
     ]),
     new CopyWebpackPlugin([
-      { from: './src/renderer.js', to: '' },
+      { from: './src/environment-builders/renderer.js', to: '' },
     ]),
     new CopyWebpackPlugin([
-      { from: './src/default-entities.js', to: '' },
+      { from: './src/environment-builders/default-entities.js', to: '' },
+    ]),
+    new CopyWebpackPlugin([
+      { from: './src/environment-builders/elements-mock.js', to: '' },
     ]),
   ],
 };
