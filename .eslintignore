@@ -5,7 +5,4 @@
 /coverage/*
 /scripts/*
 /styleguide/*
-renderer.js
-renderer-mock.js
-elements-mock.js
-default-entities.js
+/environment-builders/*

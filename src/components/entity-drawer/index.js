@@ -1,72 +1,12 @@
 /* global ENRICHER_EVENTS */
 
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Warning } from 'styled-icons/material';
 import Editor from '../editor';
-import { BlueButton } from '../commons';
-
-const DrawerModal = styled.div`
-  position: fixed;
-  border-radius: 2px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  padding: 2rem;
-  left: -100%;
-  opacity: 0;
-  transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
-  height: calc(100vh - 82px);
-  &.open {
-    left: 6px;
-    opacity: 1;
-  }
-`;
-
-const Container = styled.div`
-  width: 45rem;
-`;
-
-const CloseButton = styled.button`
-  border: none;
-  border-radius: 50%;
-  height: 1.8rem;
-  width: 1.8rem;
-  font-size: 1.3rem;
-  color: #919191;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: none;
-`;
-
-const Title = styled.span`
-  font-size: 2rem;
-`;
-const TopContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledSelect = styled.select`
-  background: white;
-  border: 2px solid #807c7c;
-  padding: 5px;
-`;
-
-const FloatingRightButton = styled(BlueButton)`
-  margin: 10px 0 0 0;
-  position: absolute;
-  right: 15px;
-  width: 10rem;
-`;
-
-const WarningIcon = styled(Warning)`
-  color: #ffff00;
-  margin-right: 10px;
-`;
+import {
+  CloseButton, Container, TopContainer,
+  Title, DrawerModal, FloatingRightButton, StyledSelect, WarningIcon,
+} from './styles';
 
 const RENDER_ALL = 'Render all notifications';
 const keyMapEntities = Object.keys(ENRICHER_EVENTS).map(key => ({

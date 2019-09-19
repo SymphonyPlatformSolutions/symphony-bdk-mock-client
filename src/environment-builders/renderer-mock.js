@@ -2,8 +2,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './assets/sass/main.scss';
-import RendererApp from './pages/renderer-app';
+import '../assets/sass/main.scss';
+import RendererApp from '../pages/renderer-app';
 
 SYMPHONY.start();
 
