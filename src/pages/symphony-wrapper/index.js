@@ -7,7 +7,10 @@ import EntityDrawer from '../../components/entity-drawer';
 import Modal from '../../components/modal';
 import DialogDrawer from '../../components/modal-drawer';
 import {
-  CenterContainer, CenterContainerBody, ExtensionAppIframe, Wrapper,
+  CenterContainer,
+  CenterContainerBody,
+  ExtensionAppIframe,
+  Wrapper,
 } from './styles';
 
 let rendererRef;
@@ -16,13 +19,35 @@ let internalPointer;
 const SymphonyWrapper = ({ bundle }) => {
   const [isEntityDrawerOpened, toggleEntityDrawer] = useState(false);
   const [isDialogDrawerOpened, toggleDialogDrawer] = useState(false);
-  const [isEnricherClosed, setCloseEnricher] = useState(false);
-  const [isAppClosed, setAppClosed] = useState(false);
-  const [isModalOpened, toggleModal] = useState(false);
+  const [isRendererOpen, toggleRendererOpen] = useState(
+    window.localStorage.getItem('mockRendererOpen') === null
+      ? true
+      : window.localStorage.getItem('mockRendererOpen') === 'true',
+  );
+  const [isAppOpen, toggleAppOpen] = useState(
+    window.localStorage.getItem('mockAppOpen') === null
+      ? true
+      : window.localStorage.getItem('mockAppOpen') === 'true',
+  );
+  const [isModalOpened, toggleModalOpen] = useState(false);
   const [modalOptions, setModalOptions] = useState(null);
-  const [iframeKey, setIframeKey] = useState(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: 111 }))}`);
+  const [iframeKey, setIframeKey] = useState(
+    `app.html?queryObj=${encodeURIComponent(
+      JSON.stringify({ page: 'app', cache: 111 }),
+    )}`,
+  );
 
   const extensionAppRef = useRef();
+
+  const handleAppWindowChange = (isApp, newValue) => {
+    if (isApp && isAppOpen !== newValue) {
+      window.localStorage.setItem('mockAppOpen', newValue);
+      toggleAppOpen(newValue);
+    } else if (!isApp && isRendererOpen !== newValue) {
+      window.localStorage.setItem('mockRendererOpen', newValue);
+      toggleRendererOpen(newValue);
+    }
+  };
 
   const submitHandler = (entityType, entityJson) => {
     const madeServices = window.SYMPHONY.mockHelper.getMadeServices();
@@ -57,61 +82,78 @@ const SymphonyWrapper = ({ bundle }) => {
     }
 
     if (errorMessage) {
-      template = { template: `<messageML><i>Renderer error:</i> ${errorMessage}<br />Please reload the webpage, and try again.</messageML>` };
+      template = {
+        template: `<messageML><i>Renderer error:</i> ${errorMessage}<br />Please reload the webpage, and try again.</messageML>`,
+      };
       sentJson = {};
     }
 
-    rendererRef.contentWindow.postMessage({
-      call: 'sendValue',
-      value: {
-        entityType,
-        template,
-        entityJson: sentJson,
+    rendererRef.contentWindow.postMessage(
+      {
+        call: 'sendValue',
+        value: {
+          entityType,
+          template,
+          entityJson: sentJson,
+        },
       },
-    }, '*');
+      '*',
+    );
   };
 
   useEffect(() => {
-    internalPointer = setInterval(() => {
-      if (extensionAppRef.current.contentWindow) {
-        extensionAppRef.current.contentWindow.SYMPHONY = Object.assign({}, window.SYMPHONY);
-      }
-    }, 1);
+    if (isAppOpen) {
+      internalPointer = setInterval(() => {
+        if (extensionAppRef.current.contentWindow) {
+          extensionAppRef.current.contentWindow.SYMPHONY = Object.assign(
+            {},
+            window.SYMPHONY,
+          );
+        }
+      }, 1);
 
-    // getAction, called by overriden action buttons
-    // Handler can be found in default-entities.js
-    window.addEventListener('getAction', ({ detail }) => {
-      const madeServices = window.SYMPHONY.mockHelper.getMadeServices();
-      const enricherService = madeServices.find(el => el.name.includes('enricher'));
-      enricherService.instance.action(detail);
-    });
-
-    // Handler can be found in default-entities.js
-    window.addEventListener('openDialog', ({ detail }) => {
-      setModalOptions({
-        url: detail.url,
-        height: detail.height,
-        width: detail.width,
+      // getAction, called by overriden action buttons
+      // Handler can be found in default-entities.js
+      window.addEventListener('getAction', ({ detail }) => {
+        const madeServices = window.SYMPHONY.mockHelper.getMadeServices();
+        const enricherService = madeServices.find(el => el.name.includes('enricher'));
+        enricherService.instance.action(detail);
       });
-      toggleModal(true);
-    });
 
-    window.addEventListener('keydown', ({ code }) => {
-      if (code === 'Escape') {
-        toggleDialogDrawer(false);
-        toggleEntityDrawer(false);
-      }
-    });
-  }, []);
+      // Handler can be found in default-entities.js
+      window.addEventListener('openDialog', ({ detail }) => {
+        setModalOptions({
+          url: detail.url,
+          height: detail.height,
+          width: detail.width,
+        });
+        toggleModalOpen(true);
+      });
+
+      window.addEventListener('keydown', ({ code }) => {
+        if (code === 'Escape') {
+          toggleDialogDrawer(false);
+          toggleEntityDrawer(false);
+        }
+      });
+    }
+  }, [isAppOpen]);
 
   const changeTheme = () => {
     const isLight = localStorage.getItem('theme-name') === 'LIGHT';
     const themeColor = isLight ? 'DARK' : 'LIGHT';
     localStorage.setItem('theme-name', themeColor);
-    setIframeKey(`app.html?queryObj=${encodeURIComponent(JSON.stringify({ page: 'app', cache: Math.random() * 100 }))}`);
+    setIframeKey(
+      `app.html?queryObj=${encodeURIComponent(
+        JSON.stringify({ page: 'app', cache: Math.random() * 100 }),
+      )}`,
+    );
     internalPointer = setInterval(() => {
       if (extensionAppRef.current.contentWindow) {
-        extensionAppRef.current.contentWindow.SYMPHONY = Object.assign({}, window.SYMPHONY);
+        extensionAppRef.current.contentWindow.SYMPHONY = Object.assign(
+          {},
+          window.SYMPHONY,
+        );
         extensionAppRef.current.contentWindow.themeColor = themeColor;
       }
     }, 1);
@@ -122,7 +164,7 @@ const SymphonyWrapper = ({ bundle }) => {
         height: detail.height,
         width: detail.width,
       });
-      toggleModal(true);
+      toggleModalOpen(true);
     });
   };
 
@@ -134,48 +176,69 @@ const SymphonyWrapper = ({ bundle }) => {
 
   return (
     <Wrapper>
-      {ReactDOM.createPortal(<EntityDrawer
-        closeHandler={() => toggleEntityDrawer(false)}
-        submitHandler={submitHandler}
-        isOpen={isEntityDrawerOpened}
-      />, document.body)}
-      {ReactDOM.createPortal(<DialogDrawer
-        isOpen={isDialogDrawerOpened}
-        closeHandler={() => toggleDialogDrawer(false)}
-      />, document.body)}
+      {ReactDOM.createPortal(
+        <EntityDrawer
+          closeHandler={() => toggleEntityDrawer(false)}
+          submitHandler={submitHandler}
+          isOpen={isEntityDrawerOpened}
+        />,
+        document.body,
+      )}
+      {ReactDOM.createPortal(
+        <DialogDrawer
+          isOpen={isDialogDrawerOpened}
+          closeHandler={() => toggleDialogDrawer(false)}
+        />,
+        document.body,
+      )}
       <WrapperSidenav
+        appIcon={appIcon}
+        appName={bundle.name}
+        appOpenHandler={() => handleAppWindowChange(true, true)}
+        rendererOpenHandler={() => handleAppWindowChange(false, true)}
         toggleEntityDrawer={() => toggleEntityDrawer(true)}
         toggleDialogDrawer={() => toggleDialogDrawer(true)}
       />
-      { isModalOpened && <Modal modalOptions={modalOptions} closeHandler={() => toggleModal(false)} />}
+      {isModalOpened && (
+        <Modal
+          modalOptions={modalOptions}
+          closeHandler={() => toggleModalOpen(false)}
+        />
+      )}
       <CenterContainer>
         <WrapperTopbar />
         <CenterContainerBody>
-          { !isAppClosed && (
-          <WrapperChatWindow
-            icon={appIcon}
-            title={bundle.name}
-            onChatClosed={() => setAppClosed(!isAppClosed)}
-            onThemeChanged={changeTheme}
-          >
-            {iframeKey && (
-            <ExtensionAppIframe
-              ref={ref => extensionAppRef.current = ref}
-              onLoad={onExtensionAppLoaded}
-              src={iframeKey}
-            />
-            ) }
-          </WrapperChatWindow>
-          ) }
-          { !isEnricherClosed && (
-          <WrapperChatWindow
-            title="Enricher Test"
-            hasFooter
-            onChatClosed={() => setCloseEnricher(!isEnricherClosed)}
-          >
-            <ExtensionAppIframe src="renderer-app.html" ref={(ref) => { rendererRef = ref; }} />
-          </WrapperChatWindow>
-          ) }
+          {isAppOpen && (
+            <WrapperChatWindow
+              icon={appIcon}
+              title={bundle.name}
+              onChatClosed={() => handleAppWindowChange(true, !isAppOpen)}
+              onThemeChanged={changeTheme}
+              hasFooter={false}
+            >
+              {iframeKey && (
+                <ExtensionAppIframe
+                  ref={ref => (extensionAppRef.current = ref)}
+                  onLoad={onExtensionAppLoaded}
+                  src={iframeKey}
+                />
+              )}
+            </WrapperChatWindow>
+          )}
+          {isRendererOpen && (
+            <WrapperChatWindow
+              title="Enricher Test"
+              hasFooter
+              onChatClosed={() => handleAppWindowChange(false, !isRendererOpen)}
+            >
+              <ExtensionAppIframe
+                src="renderer-app.html"
+                ref={(ref) => {
+                  rendererRef = ref;
+                }}
+              />
+            </WrapperChatWindow>
+          )}
         </CenterContainerBody>
       </CenterContainer>
     </Wrapper>

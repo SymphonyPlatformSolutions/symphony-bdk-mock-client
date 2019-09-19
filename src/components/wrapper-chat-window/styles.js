@@ -104,6 +104,7 @@ export const IconExternalLink = styled(ExternalLink)`
 `;
 export const IconClose = styled(Close)`
   margin-left: 8px;
+  cursor: pointer;
   &:hover {
     color: black;
     transform: scale(1.1);
@@ -112,6 +113,7 @@ export const IconClose = styled(Close)`
 
 export const IconColorLens = styled(ColorLens)`
   margin-left: 8px;
+  cursor: pointer;
   &:hover {
     color: #29b6f6;
   }
