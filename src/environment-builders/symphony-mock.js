@@ -278,63 +278,6 @@ const SYMPHONY_MOCK = {
         },
       ],
     },
-    {
-      id: 1,
-      label: 'SIGNALS',
-      hasAdd: true,
-      list: [
-        {
-          id: 0,
-          status: null,
-          text: 'Keywords',
-          icon: null,
-        },
-        {
-          id: 1,
-          status: null,
-          text: 'All Following',
-          icon: null,
-        },
-      ],
-    },
-    {
-      id: 2,
-      label: 'APPLICATIONS',
-      hasAdd: true,
-      list: [
-        {
-          id: 0,
-          status: null,
-          text: 'Symphony Market',
-          icon: null,
-        },
-        {
-          id: 1,
-          status: null,
-          text: 'Sample App',
-          icon: '/assets/white-label.png',
-        },
-      ],
-    },
-    {
-      id: 3,
-      label: 'INVITES',
-      hasAdd: true,
-      list: [
-        {
-          id: 0,
-          status: null,
-          text: 'Create Team',
-          icon: null,
-        },
-        {
-          id: 1,
-          status: null,
-          text: 'Invite Contacts',
-          icon: null,
-        },
-      ],
-    },
   ],
 };
 
