@@ -227,6 +227,7 @@ const SymphonyWrapper = ({ bundle }) => {
           )}
           {isRendererOpen && (
             <WrapperChatWindow
+              hasButtons
               title="Enricher Test"
               hasFooter
               onChatClosed={() => handleAppWindowChange(false, !isRendererOpen)}

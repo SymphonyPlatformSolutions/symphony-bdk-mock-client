@@ -21,7 +21,9 @@ import {
   IconSmiley,
   MessageBoxWrapper,
   Separator,
+  Title,
 } from './styles';
+import UiButtonSelector from '../ui-button-selector';
 
 function MessageBox() {
   return (
@@ -43,6 +45,7 @@ const WrapperChatWindow = ({
   children,
   title,
   hasFooter,
+  hasButtons,
   icon,
   onThemeChanged,
   onChatClosed,
@@ -56,8 +59,18 @@ const WrapperChatWindow = ({
         <IconClose size={20} onClick={onChatClosed} />
       </ChatWindowHeaderToolbar>
       <ChatWindownHeaderIconContainer>
-        {icon && <img width={40} height={40} src={icon} />}
-        <ChatWindowHeaderTitle>{title}</ChatWindowHeaderTitle>
+        <Title>
+          {icon && <img width={40} height={40} src={icon} />}
+          <ChatWindowHeaderTitle>{title}</ChatWindowHeaderTitle>
+        </Title>
+        <div>
+          {hasButtons && (
+            <UiButtonSelector
+              buttons={SYMPHONY.mockHelper.getUiButtons()}
+              implementation={SYMPHONY.mockHelper.getImplementation()}
+            />
+          )}
+        </div>
       </ChatWindownHeaderIconContainer>
     </ChatWindowHeader>
     <ChatWindowBody>{children}</ChatWindowBody>
