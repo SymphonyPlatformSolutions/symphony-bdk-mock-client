@@ -127,3 +127,8 @@ export const ChatWindowHeaderToolbar = styled.div`
   color: #808289;
   font-weight: 200;
 `;
+
+export const Title = styled.div`
+  display: flex;
+  align-items: center;
+`;

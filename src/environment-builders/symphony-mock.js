@@ -71,8 +71,11 @@ const SYMPHONY_MOCK = {
     register: (str) => {
       console.info(`Registering service -> ${str}`);
       return {
-        implement: () => {
+        implement: (implementation, ...args) => {
           console.info('App Service implements called');
+          console.log(implementation);
+          console.log(args);
+          singletonHelper.setImplementation(implementation);
         },
       };
     },
@@ -101,6 +104,7 @@ const SYMPHONY_MOCK = {
           return {
             registerExtension: (...args) => {
               console.info(`Registering Entity -> ${args}`);
+              singletonHelper.addUiButton(...args);
             },
             listen: (...args) => {
               console.info(`Listening to ui entity subscription -> ${args}`);
