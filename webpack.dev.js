@@ -106,7 +106,7 @@ module.exports = merge(config, {
       'Access-Control-Allow-Origin': '*'
     },
     proxy: [{
-      context: ['/app.html', '/controller.bundle.js', '/app.bundle.js', '/bundle.json', '/favicon.ico', '/app.css'],
+      context: ['/app.html', '/controller.bundle.js', '/app.bundle.js', '/config.js', '/bundle.json', '/favicon.ico', '/app.css'],
       target: 'https://localhost:4000',
       secure: false,
     }, {
