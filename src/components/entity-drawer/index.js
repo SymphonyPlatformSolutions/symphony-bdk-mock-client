@@ -4,9 +4,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Editor from '../editor';
 import {
-  CloseButton, Container, TopContainer,
-  Title, DrawerModal, FloatingRightButton, StyledSelect, WarningIcon,
-} from './styles';
+  Container,
+  TopContainer,
+  Title,
+  DrawerModal,
+  FloatingRightButton,
+  ControlPanel,
+  BottomPanel,
+  SubTitle,
+  DropdownContainer,
+  ButtonContainer,
+} from '../commons/drawer/styles';
+import { DrawerClose } from '../commons';
+import Dropdown from '../commons/dropdown';
+import { WarningBox } from '../commons/warning-box';
 
 const RENDER_ALL = 'Render all notifications';
 const keyMapEntities = Object.keys(ENRICHER_EVENTS).map(key => ({
@@ -26,14 +37,22 @@ class EntityDrawer extends React.Component {
   selectRef;
 
   state = {
+    selected: null,
     jsonText: JSON.stringify(keyMapEntities[0].json, 0, 2),
   };
 
-  handleSelectChange = ({ target }) => {
-    const { selectedIndex } = target;
-    this.setState({
-      jsonText: JSON.stringify(keyMapEntities[selectedIndex].json, 0, 2),
-    });
+  handleSelectChange = (option) => {
+    if (option.value === RENDER_ALL) {
+      this.setState({
+        selected: option,
+        jsonText: JSON.stringify(keyMapEntities[keyMapEntities.length - 1].json),
+      });
+    } else {
+      this.setState({
+        selected: option,
+        jsonText: JSON.stringify(ENRICHER_EVENTS[option.label].json, 0, 2),
+      });
+    }
   };
 
   handleJsonChange = (data) => {
@@ -44,60 +63,65 @@ class EntityDrawer extends React.Component {
 
   handleOnClick = () => {
     const { submitHandler } = this.props;
-    const { jsonText } = this.state;
+    const { jsonText, selected } = this.state;
 
-    if (this.selectRef.value === RENDER_ALL) {
+    if (selected.label === RENDER_ALL) {
       Object.keys(ENRICHER_EVENTS).forEach(el => submitHandler(ENRICHER_EVENTS[el].type, {
         id: JSON.stringify(ENRICHER_EVENTS[el].json),
       }));
       return;
     }
 
-    submitHandler(this.selectRef.value || this.textFieldRef.value, {
+    submitHandler(selected.value || this.textFieldRef.value, {
       id: jsonText || '{}',
     });
   };
 
   render() {
     const { closeHandler, isOpen } = this.props;
-
-    const { jsonText } = this.state;
+    const { jsonText, option } = this.state;
 
     return (
       <DrawerModal className={isOpen ? 'open' : null}>
         <Container>
-          <TopContainer>
-            <Title>Select Entities for enrichment</Title>
-            <span>
-              <WarningIcon size={35} />
-              <i>
-                These entities need to be <b>defined</b> in your
-                GeneralEnricher.js <b>and</b> in its entities.js dependency
-              </i>
-            </span>
-            <CloseButton type="button" onClick={closeHandler}>
-              x
-            </CloseButton>
-          </TopContainer>
-          <h4>Select Entity</h4>
-          <StyledSelect
-            onChange={this.handleSelectChange}
-            ref={(ref) => {
-              this.selectRef = ref;
-            }}
-          >
-            {keyMapEntities.map(entry => (
-              <option key={entry.key} value={entry.type}>
-                {entry.key}
-              </option>
-            ))}
-          </StyledSelect>
-          <hr />
-          <h4>Entity JSON</h4>
-          <Editor name="enricher" value={jsonText} onChange={this.handleJsonChange} />
-          <FloatingRightButton type="button" onClick={this.handleOnClick}>
-            Render Entity
-          </FloatingRightButton>
+          <ControlPanel>
+            <TopContainer>
+              <Title>Select Message Template</Title>
+              <WarningBox hasWarning>
+                <i>
+                  These templates need to be <b>defined</b> in your
+                  GeneralEnricher.js <b>and</b> in its entities.js dependency
+                </i>
+              </WarningBox>
+              <DrawerClose onClick={closeHandler} />
+            </TopContainer>
+            <DropdownContainer>
+              <Dropdown
+                onChange={this.handleSelectChange}
+                options={keyMapEntities.map(entry => ({
+                  value: entry.type,
+                  label: entry.key,
+                }))}
+                value={option}
+                label="Select Message Template"
+              />
+            </DropdownContainer>
+          </ControlPanel>
+          <BottomPanel>
+            <SubTitle>Message Data</SubTitle>
+            <div style={{ height: '80%' }}>
+              <Editor
+                name="enricher"
+                value={jsonText}
+                onChange={this.handleJsonChange}
+              />
+            </div>
+            <ButtonContainer>
+              <FloatingRightButton type="button" onClick={this.handleOnClick}>
+                Render Message
+              </FloatingRightButton>
+            </ButtonContainer>
+          </BottomPanel>
         </Container>
       </DrawerModal>
     );

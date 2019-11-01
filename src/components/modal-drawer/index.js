@@ -2,21 +2,40 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Editor from '../editor';
+// import {
+//   ButtonBox, StyledSelect, FloatingRightButton, Title, TopContainer,
+//   CloseButton, Container, DialogDrawer,
+// } from './styles';
 import {
-  ButtonBox, StyledSelect, FloatingRightButton, Title, TopContainer,
-  CloseButton, Container, DialogDrawer,
-} from './styles';
+  Container,
+  TopContainer,
+  Title,
+  DrawerModal,
+  FloatingRightButton,
+  ControlPanel,
+  BottomPanel,
+  SubTitle,
+  DropdownContainer,
+  ButtonContainer,
+} from '../commons/drawer/styles';
+import { DrawerClose } from '../commons';
+import { WarningBox } from '../commons/warning-box';
+import Dropdown from '../commons/dropdown';
 
 const keyMapDialogs = Object.keys(MODAL_IDS).map(key => ({
-  key,
+  label: MODAL_IDS[key].type,
   value: key,
 }));
 
 function ModalDrawer({ closeHandler, isOpen }) {
-  const [dialog, setDialog] = useState(keyMapDialogs[0].value);
+  const [dialog, setDialog] = useState(keyMapDialogs.length ? keyMapDialogs[0] : null);
   const [jsonText, changeJsonText] = useState(
-    JSON.stringify(MODAL_IDS[keyMapDialogs[0].value].entityData, 0, 2),
+    keyMapDialogs.length
+      ? JSON.stringify(MODAL_IDS[keyMapDialogs[0].value].entityData, 0, 2)
+      : null,
   );
+  console.log(MODAL_IDS);
+  console.log(keyMapDialogs);
 
   const handleOnClick = () => {
     const madeServices = window.SYMPHONY.mockHelper.getMadeServices();
@@ -37,45 +56,44 @@ function ModalDrawer({ closeHandler, isOpen }) {
   };
 
   return (
-    <DialogDrawer className={isOpen ? 'open' : null}>
+    <DrawerModal className={isOpen ? 'open' : null}>
       <Container>
-        <TopContainer>
-          <Title>Open a custom dialog</Title>
-          <span>
-            <i>
-              These dialogs need to be <b>defined</b> in the{' '}
-              <b>app-constants.js</b> file in your extension-app folder
-            </i>
-          </span>
-          <CloseButton type="button" onClick={closeHandler}>
-            x
-          </CloseButton>
-        </TopContainer>
-        <h4>Select Dialog to Open</h4>
-        <StyledSelect
-          onChange={({ target }) => {
-            setDialog(target.value);
-            changeJsonText(
-              JSON.stringify(MODAL_IDS[target.value].entityData, 0, 2),
-            );
-          }}
-        >
-          {keyMapDialogs.map(entry => (
-            <option key={entry.key} value={entry.value}>
-              {entry.key}
-            </option>
-          ))}
-        </StyledSelect>
-        <hr />
-        <h4>Entity JSON</h4>
-        <Editor name="modal" value={jsonText} onChange={changeJsonText} />
-        <ButtonBox>
-          <FloatingRightButton type="button" onClick={handleOnClick}>
-            Open Dialog
-          </FloatingRightButton>
-        </ButtonBox>
+        <ControlPanel>
+          <TopContainer>
+            <Title>Open a custom dialog</Title>
+            <WarningBox>
+              <i>
+                These dialogs need to be <b>defined</b> in the{' '}
+                <b>app-constants.js</b> file in your extension-app folder
+              </i>
+            </WarningBox>
+            <DrawerClose onClick={closeHandler} />
+          </TopContainer>
+          <DropdownContainer>
+            <Dropdown
+              onChange={(chosen) => {
+                setDialog(chosen);
+                changeJsonText(
+                  JSON.stringify(MODAL_IDS[chosen.value].entityData, 0, 2),
+                );
+              }}
+              options={keyMapDialogs}
+              value={dialog}
+              label="Select Dialog to Open"
+            />
+          </DropdownContainer>
+        </ControlPanel>
+        <BottomPanel>
+          <SubTitle>Modal Data</SubTitle>
+          <Editor name="modal" value={jsonText} onChange={changeJsonText} />
+          <ButtonContainer>
+            <FloatingRightButton type="button" onClick={handleOnClick}>
+                Open Dialog
+            </FloatingRightButton>
+          </ButtonContainer>
+        </BottomPanel>
       </Container>
-    </DialogDrawer>
+    </DrawerModal>
   );
 }
 

@@ -34,15 +34,15 @@ const WrapperMessageStack = props => (
                                           <div className="social message read-by-me received background-colorable">
                                             <div className="message__inner-wrapper">
                                               <div className="metadata message__metadata">
-                                                <div className="time-formats">
-                                                  <time className="twenty-four-hour-with-seconds posted-time">
-                                                    18:10:10
-                                                  </time>
-                                                </div>
                                                 <div className="author metadata__author">
                                                   <span className="display-name aliasable colorable">
                                                     You
                                                   </span>
+                                                  <div className="time-formats">
+                                                    <time className="twenty-four-hour-with-seconds posted-time">
+                                                    18:10:10
+                                                    </time>
+                                                  </div>
                                                 </div>
                                               </div>
                                               <div className="message__body-wrapper ">

@@ -163,7 +163,7 @@ const WrapperSidenav = (props) => {
           <AvatarStatus />
         </div>
         <UserNameWrapper>
-          <UserNameText>Picard</UserNameText>
+          <UserNameText>Cpt. Picard</UserNameText>
           <UserNamePresence>Available</UserNamePresence>
         </UserNameWrapper>
         <AddButton />
@@ -180,7 +180,7 @@ const WrapperSidenav = (props) => {
       <SideNavPanels key="invites" {...STATIC_SIDE_NAV.invites} />
       <DrawerButtonContainer>
         <BlueButton type="button" onClick={toggleEntityDrawer}>
-          Open Entity Drawer
+          Open Message Editor
         </BlueButton>
       </DrawerButtonContainer>
       <DrawerButtonContainer>
