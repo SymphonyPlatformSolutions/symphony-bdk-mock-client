@@ -38,7 +38,7 @@ class EntityDrawer extends React.Component {
 
   state = {
     selected: null,
-    jsonText: JSON.stringify(keyMapEntities[0].json, 0, 2),
+    jsonText: '',
   };
 
   handleSelectChange = (option) => {
@@ -65,6 +65,8 @@ class EntityDrawer extends React.Component {
     const { submitHandler } = this.props;
     const { jsonText, selected } = this.state;
 
+    console.log(selected, jsonText);
+
     if (selected.label === RENDER_ALL) {
       Object.keys(ENRICHER_EVENTS).forEach(el => submitHandler(ENRICHER_EVENTS[el].type, {
         id: JSON.stringify(ENRICHER_EVENTS[el].json),
@@ -79,7 +81,7 @@ class EntityDrawer extends React.Component {
 
   render() {
     const { closeHandler, isOpen } = this.props;
-    const { jsonText, option } = this.state;
+    const { jsonText, option, selected } = this.state;
 
     return (
       <DrawerModal className={isOpen ? 'open' : null}>
@@ -117,7 +119,7 @@ class EntityDrawer extends React.Component {
               />
             </div>
             <ButtonContainer>
-              <FloatingRightButton type="button" onClick={this.handleOnClick}>
+              <FloatingRightButton type="button" onClick={this.handleOnClick} disabled={!selected}>
                 Render Message
               </FloatingRightButton>
             </ButtonContainer>

@@ -23,31 +23,24 @@ import { WarningBox } from '../commons/warning-box';
 import Dropdown from '../commons/dropdown';
 
 const keyMapDialogs = Object.keys(MODAL_IDS).map(key => ({
-  label: MODAL_IDS[key].type,
   value: key,
+  label: key,
 }));
 
 function ModalDrawer({ closeHandler, isOpen }) {
-  const [dialog, setDialog] = useState(keyMapDialogs.length ? keyMapDialogs[0] : null);
-  const [jsonText, changeJsonText] = useState(
-    keyMapDialogs.length
-      ? JSON.stringify(MODAL_IDS[keyMapDialogs[0].value].entityData, 0, 2)
-      : null,
-  );
-  console.log(MODAL_IDS);
-  console.log(keyMapDialogs);
+  const [dialog, setDialog] = useState(null);
+  const [jsonText, changeJsonText] = useState('');
 
   const handleOnClick = () => {
     const madeServices = window.SYMPHONY.mockHelper.getMadeServices();
     if (!madeServices || !madeServices.length) {
-      console.log('No services were made, so nothing to render the entity!');
       return;
     }
 
     if (madeServices) {
       const enricherService = madeServices.find(el => el.name.includes('enricher'));
       enricherService.instance.action({
-        ...MODAL_IDS[dialog],
+        ...MODAL_IDS[dialog.label],
         entityData: JSON.parse(jsonText),
       });
     }
@@ -87,8 +80,8 @@ function ModalDrawer({ closeHandler, isOpen }) {
           <SubTitle>Modal Data</SubTitle>
           <Editor name="modal" value={jsonText} onChange={changeJsonText} />
           <ButtonContainer>
-            <FloatingRightButton type="button" onClick={handleOnClick}>
-                Open Dialog
+            <FloatingRightButton type="button" onClick={handleOnClick} disabled={!dialog}>
+              Open Dialog
             </FloatingRightButton>
           </ButtonContainer>
         </BottomPanel>

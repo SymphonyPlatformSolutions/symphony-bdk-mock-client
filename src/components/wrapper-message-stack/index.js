@@ -1,79 +1,65 @@
 import React from 'react';
+import styled from 'styled-components';
 import { EntityTitle } from './styles';
 import './symphony.scss';
 import './chat-module.css';
+import ChatMessageHeader from '../chat-message-header';
 
 /**
  * FILE TO BE IMPLEMENTED.
  */
 
+const MessageWrapper = styled.div`
+  transition: all 0.3s;
+  :hover {
+    background-color: rgba(23,25,28, 0.08) !important;
+  }
+  margin-bottom: 8px;
+`;
+const Line = styled.div`
+  border-top: 1px solid #263d5d;
+  opacity: 0.2;
+  width: ${({ small }) => (small ? '16px' : '100%')};
+`;
+
+const SeparatorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+const EntitySeparator = props => (
+  <SeparatorContainer>
+    <Line small />
+    <EntityTitle>
+      {props.children}
+    </EntityTitle>
+    <Line />
+  </SeparatorContainer>
+);
+
 const WrapperMessageStack = props => (
   <div>
-    <EntityTitle>
+    <EntitySeparator>
       {props.entityType}
-    </EntityTitle>
-    <div id="rendered-content" className="rendered-content with-blue-border">
-      <div className="rendered-content-container contrast theme-color-grey trader twentyfour-hour-with-sec-time light condensed">
-        <div id="main-content-wrapper" className="contrast light condensed">
-          <div id="content-wrapper">
-            <div id="simple_grid" className="simple_grid_has_one_container">
-              <div className="simple_grid_container simple_grid_main_container simple-jack-large">
-                <div className="instant-message chat-module module single-party">
-                  <div className="module-content-wrapper">
-                    <section className="module-content">
-                      <div className="chatroom-messages-wrap">
-                        <div className="chatroom-messages">
-                          <div className="chat-message-list-manager-wrapper">
-                            <div className="chat-message-list-container">
-                              <div className="message-list">
-                                <div className="resize-sensor-wrap">
-                                  <div className="module-scrollable message-group-container">
-                                    <div className=" message-group">
-                                      <div className="message-group__content rendered-content-wrapper">
-                                        <div className="message-group__content rendered-content-wrapper">
-                                          <div className="social message read-by-me received background-colorable">
-                                            <div className="message__inner-wrapper">
-                                              <div className="metadata message__metadata">
-                                                <div className="author metadata__author">
-                                                  <span className="display-name aliasable colorable">
-                                                    You
-                                                  </span>
-                                                  <div className="time-formats">
-                                                    <time className="twenty-four-hour-with-seconds posted-time">
-                                                    18:10:10
-                                                    </time>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <div className="message__body-wrapper ">
-                                                <div
-                                                  className="message__body body message-content"
-                                                  dangerouslySetInnerHTML={{
-                                                    __html: props.htmlContent,
-                                                  }}
-                                                />
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-              </div>
+    </EntitySeparator>
+    <MessageWrapper>
+      <ChatMessageHeader />
+      <div id="rendered-content" className="rendered-content with-blue-border">
+        <div className="rendered-content-container contrast theme-color-grey trader twentyfour-hour-with-sec-time light condensed">
+          <div id="main-content-wrapper" className="contrast light condensed">
+            <div className="message-group__content rendered-content-wrapper">
+              <div
+                className="message__body body message-content"
+                dangerouslySetInnerHTML={{
+                  __html: props.htmlContent,
+                }}
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </MessageWrapper>
   </div>
 );
 

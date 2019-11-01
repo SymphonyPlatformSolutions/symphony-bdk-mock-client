@@ -15,7 +15,14 @@ export const BlueButton = styled.button`
   border: none;
   margin: ${props => props.margin || 'none'};
 
-  :hover {
+  transition: all 0.3s;
+
+  :disabled {
+    background-color: #35383E;
+    cursor: default;
+  }
+
+  :hover:not(:disabled) {
     background-color: #138bd6;
   }
 `;

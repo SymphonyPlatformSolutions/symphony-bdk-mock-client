@@ -46,16 +46,19 @@ const RendererApp = () => {
         htmlString = htmlString.replace(el[1], el[1].replace(el[2], `${el[2]} !important; overflow: unset;`));
       });
       // Add clickable event to action
-      const keyPositions = Object.keys(template.data).map(key => ({
-        place: htmlString.match(new RegExp(`<span class="action-label">${template.data[key].label}<\/span>`)).index,
-        key,
-      }));
-      // Sort actions in order of appearance to associate the correct onclick events
-      keyPositions.sort((a, b) => a.place - b.place);
-      keyPositions.forEach((el) => {
-        htmlString = htmlString.replace(/class="entity-action"(?! onclick)/,
-          `class="entity-action" onclick="overrideActionClick(event, '${encodeURIComponent(JSON.stringify(template.data[el.key].data))}');"`);
-      });
+      if (template.data) {
+        const keyPositions = Object.keys(template.data).map(key => ({
+          place: htmlString.match(new RegExp(`<span class="action-label">${template.data[key].label}<\/span>`)).index,
+          key,
+        }));
+
+        // Sort actions in order of appearance to associate the correct onclick events
+        keyPositions.sort((a, b) => a.place - b.place);
+        keyPositions.forEach((el) => {
+          htmlString = htmlString.replace(/class="entity-action"(?! onclick)/,
+            `class="entity-action" onclick="overrideActionClick(event, '${encodeURIComponent(JSON.stringify(template.data[el.key].data))}');"`);
+        });
+      }
 
       changeMessages((prevState) => {
         messagesCounter += 1;
