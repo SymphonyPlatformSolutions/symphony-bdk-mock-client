@@ -1,125 +1,29 @@
 import React from 'react';
-import styled from 'styled-components';
-import { ChevronUp, Block } from 'styled-icons/boxicons-regular';
-import { Attachment, MusicNote } from 'styled-icons/material';
-import { Smiley } from 'styled-icons/octicons';
-import { Pin } from 'styled-icons/boxicons-solid';
-import { ExternalLink, Close } from 'styled-icons/evil';
-import { ColorLens } from 'styled-icons/material';
-
-const ChatWindow = styled.div`
-  display: grid;
-  grid-auto-rows: 71px auto 40px;  
-  border-color: transparent!important;
-  border-width: 0!important;
-  border-radius: 3px!important;
-  box-shadow: 0 0 0 0 transparent;
-  margin: 10px 5px 9px 6px;
-  background-color: #ffffff;
-`;
-
-const ChatWindowHeader = styled.div`
-  display: inline-flex;
-  flex-direction: column;
-  border-bottom: 1px solid #e0e4eb;
-  height: 70px;
-`;
-
-const ChatWindownHeaderIconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
-  transform: translateY(-5px);
-`;
-
-const ChatWindowHeaderTitle = styled.h3`
-  margin: 0 0 0 10px;
-`;
-
-const ChatWindowBody = styled.div`
-  overflow: auto;
-  flex-grow: 1;
-`;
-const ChatWindowFooter = styled.div`
-  overflow: auto;
-  height: 40px;
-`;
-
-
-const MessageBoxWrapper = styled.div`
-  display: flex;
-  height: 34px;
-  flex-direction: row;
-  border-radius: 2px;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border: 1px solid #c9cbd1;
-  margin: 0 24px 0 24px;
-  color: #c9cbd1;
-  :hover {
-    border: 2px solid #6a707c;
-    color: #6a707c;
-  }
-  ::placeholder {
-     color: #6a707c;
-  }
-`;
-
-const IconChevronUp = styled(ChevronUp)`
-  margin-top: 9px;
-  margin-left: 9px;
-`;
-
-const ChatToolbar = styled.div`
-  display: flex;
-  margin-right: 10px;
-  align-items: center;
-`;
-const IconBlock = styled(Block)`
-  margin-left: 8px;
-`;
-const IconAttachment = styled(Attachment)`
-  margin-left: 8px;
-`;
-const IconMusicNote = styled(MusicNote)`
-  margin-left: 8px;
-`;
-const IconSmiley = styled(Smiley)`
-  margin-left: 8px;
-`;
-
-const ChatInput = styled.input`
-  border: none;
-  flex-grow: 1;
-`;
-
-const Separator = styled.span`
-  margin-left: 8px;
-`;
-
-const IconPin = styled(Pin)`
-  margin-left: 8px;
-`;
-const IconExternalLink = styled(ExternalLink)`
-  margin-left: 8px;
-`;
-const IconClose = styled(Close)`
-  margin-left: 8px;
-  &:hover {
-    color: black;
-    transform: scale(1.1);
-  }
-`;
-
-const IconColorLens = styled(ColorLens)`
- margin-left: 8px;
- &:hover {
-  color: #29b6f6;
- }
-`;
-
+import PropTypes from 'prop-types';
+import {
+  IconClose,
+  ChatInput,
+  ChatToolbar,
+  ChatWindow,
+  ChatWindowBody,
+  ChatWindowFooter,
+  ChatWindowHeader,
+  ChatWindowHeaderTitle,
+  ChatWindowHeaderToolbar,
+  ChatWindownHeaderIconContainer,
+  IconAttachment,
+  IconBlock,
+  IconChevronUp,
+  IconColorLens,
+  IconExternalLink,
+  IconMusicNote,
+  IconPin,
+  IconSmiley,
+  MessageBoxWrapper,
+  Separator,
+  Title,
+} from './styles';
+import UiButtonSelector from '../ui-button-selector';
 
 function MessageBox() {
   return (
@@ -137,40 +41,61 @@ function MessageBox() {
   );
 }
 
-const ChatWindowHeaderToolbar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 10px 15px 0 0;
-  color: #808289;
-  font-weight: 200;
-`;
-
-const WrapperChatWindow = ({ children, title, hasFooter, icon, onThemeChanged, onChatClosed }) => (
+const WrapperChatWindow = ({
+  children,
+  title,
+  hasFooter,
+  hasButtons,
+  icon,
+  onThemeChanged,
+  onChatClosed,
+}) => (
   <ChatWindow>
     <ChatWindowHeader>
       <ChatWindowHeaderToolbar>
-        { onThemeChanged && <IconColorLens size={20} onClick={onThemeChanged} /> }
+        {onThemeChanged && <IconColorLens size={20} onClick={onThemeChanged} />}
         <IconPin size={20} />
         <IconExternalLink size={20} />
-        <IconClose size={20} onClick={onChatClosed}/>
+        <IconClose size={20} onClick={onChatClosed} />
       </ChatWindowHeaderToolbar>
       <ChatWindownHeaderIconContainer>
-        { icon && <img width={40} height={40} src={icon}/> }
-         <ChatWindowHeaderTitle>
-          {title}
-        </ChatWindowHeaderTitle>
+        <Title>
+          {icon && <img width={40} height={40} src={icon} />}
+          <ChatWindowHeaderTitle>{title}</ChatWindowHeaderTitle>
+        </Title>
+        <div>
+          {hasButtons && (
+            <UiButtonSelector
+              buttons={SYMPHONY.mockHelper.getUiButtons()}
+              implementation={SYMPHONY.mockHelper.getImplementation()}
+            />
+          )}
+        </div>
       </ChatWindownHeaderIconContainer>
-       </ChatWindowHeader>
-    <ChatWindowBody>
-      {children}
-    </ChatWindowBody>
-    { hasFooter && (
+    </ChatWindowHeader>
+    <ChatWindowBody>{children}</ChatWindowBody>
+    {hasFooter && (
       <ChatWindowFooter>
         <MessageBox />
       </ChatWindowFooter>
     )}
   </ChatWindow>
 );
+
+WrapperChatWindow.propTypes = {
+  children: PropTypes.any,
+  title: PropTypes.string,
+  hasFooter: PropTypes.bool,
+  icon: PropTypes.string,
+  onThemeChanged: PropTypes.func.isRequired,
+  onChatClosed: PropTypes.func.isRequired,
+};
+
+WrapperChatWindow.defaultProps = {
+  children: null,
+  title: 'My chat',
+  hasFooter: true,
+  icon: null,
+};
 
 export default WrapperChatWindow;

@@ -5,4 +5,4 @@
 /coverage/*
 /scripts/*
 /styleguide/*
-renderer.js
+/environment-builders/*

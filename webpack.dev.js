@@ -8,8 +8,8 @@ const webpack = require('webpack');
 
 let wrapperEntry = './src/wrapper.js';
 let currEnv = 'MOCK';
-const rendererEntry = './src/renderer-mock.js';
-const symphonyMockEntry = './src/symphony-mock.js';
+const rendererEntry = './src/environment-builders/renderer-mock.js';
+const symphonyMockEntry = './src/environment-builders/symphony-mock.js';
 
 console.log('Current environment: ', currEnv);
 
@@ -84,10 +84,13 @@ const config = {
       { from: './src/assets/sass/fonts', to: 'fonts' },
     ]),
     new CopyWebpackPlugin([
-      { from: './src/renderer.js', to: '' },
+      { from: './src/environment-builders/renderer.js', to: '' },
     ]),
     new CopyWebpackPlugin([
-      { from: './src/default-entities.js', to: '' },
+      { from: './src/environment-builders/default-entities.js', to: '' },
+    ]),
+    new CopyWebpackPlugin([
+      { from: './src/environment-builders/elements-mock.js', to: '' },
     ]),
   ],
 };
@@ -103,7 +106,7 @@ module.exports = merge(config, {
       'Access-Control-Allow-Origin': '*'
     },
     proxy: [{
-      context: ['/app.html', '/controller.bundle.js', '/app.bundle.js', '/bundle.json', '/favicon.ico', '/app.css'],
+      context: ['/app.html', '/controller.bundle.js', '/app.bundle.js', '/config.js', '/bundle.json', '/favicon.ico', '/app.css'],
       target: 'https://localhost:4000',
       secure: false,
     }, {

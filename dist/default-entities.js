@@ -147,3 +147,14 @@ function overrideCardCollapse(id) {
     element.classList.add('collapsed');
   }
 }
+
+function overrideActionClick(e, actionObject) {
+  window.parent.dispatchEvent(
+    new CustomEvent('getAction', {
+      detail: JSON.parse(decodeURIComponent(actionObject)),
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+  e.stopPropagation();
+}
