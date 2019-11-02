@@ -35,7 +35,6 @@ class SymphonyMockHelper {
     if (!UI_BUTTONS[type]) { return; }
     if (this.uiButtons[UI_BUTTONS[type]].find(el => el.id === id)) { return; }
     this.uiButtons[UI_BUTTONS[type]].push({ ...info, id });
-    console.log('ADDED BUTTON', id);
   }
 
   getUiButtons() {
