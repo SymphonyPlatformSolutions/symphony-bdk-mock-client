@@ -110,7 +110,7 @@ class EntityDrawer extends React.Component {
           </ControlPanel>
           <BottomPanel>
             <SubTitle>Message Data</SubTitle>
-            <div style={{ height: '80%' }}>
+            <div style={{ height: 'calc(100vh - 437px)' }}>
               <Editor
                 name="enricher"
                 value={jsonText}

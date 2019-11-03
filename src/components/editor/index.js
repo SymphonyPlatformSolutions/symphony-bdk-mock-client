@@ -15,7 +15,7 @@ const Editor = (props) => {
       name={name}
       onChange={data => onChange(data)}
       fontSize={14}
-      height="300px"
+      height="inherit"
       showPrintMargin
       showGutter
       highlightActiveLine

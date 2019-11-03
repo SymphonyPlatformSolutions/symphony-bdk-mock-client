@@ -25,7 +25,7 @@ export const CenterContainer = styled.div`
 export const CenterContainerBody = styled.div`
   display: grid;
   grid-auto-rows: auto auto;
-  height: 100%;
+  height: calc(100vh - 60px);
   background: #e3e5e8;
 
   @media (min-width: 1300px) {
