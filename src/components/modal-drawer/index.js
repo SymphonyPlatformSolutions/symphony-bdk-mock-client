@@ -2,10 +2,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Editor from '../editor';
-// import {
-//   ButtonBox, StyledSelect, FloatingRightButton, Title, TopContainer,
-//   CloseButton, Container, DialogDrawer,
-// } from './styles';
 import {
   Container,
   TopContainer,
@@ -78,7 +74,9 @@ function ModalDrawer({ closeHandler, isOpen }) {
         </ControlPanel>
         <BottomPanel>
           <SubTitle>Modal Data</SubTitle>
-          <Editor name="modal" value={jsonText} onChange={changeJsonText} />
+          <div style={{ height: 'calc(100vh - 437px)' }}>
+            <Editor name="modal" value={jsonText} onChange={changeJsonText} />
+          </div>
           <ButtonContainer>
             <FloatingRightButton type="button" onClick={handleOnClick} disabled={!dialog}>
               Open Dialog

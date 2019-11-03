@@ -5,11 +5,10 @@ import { Close } from 'styled-icons/material';
 export const BlueButton = styled.button`
   width: ${props => props.width || '80%'};
   height: ${props => props.height || 'auto'};
-  border-radius: 30px;
+  border-radius: 5px;
   padding: 0.6rem;
   cursor: pointer;
-  background-color: rgba(0,0,0,0);
-  background-color: #007ecc;
+  background-color: #2c9eec;
   color: white;
   justify-content: center;
   border: none;
@@ -20,33 +19,32 @@ export const BlueButton = styled.button`
   :disabled {
     background-color: #35383E;
     cursor: default;
+    color: #5d5d5d;
   }
 
   :hover:not(:disabled) {
-    background-color: #138bd6;
+    background-color: #78c2f5;
   }
 `;
 
 const CloseButton = styled.button`
+  width: 2.3rem;
+  height: 2.3rem;
   padding: 0;
   border: none;
-  border-radius: 0 0 0 70%;
-  height: 2.3rem;
-  width: 2.3rem;
   font-size: 1rem;
   font-size: 1.3rem;
-  color: #F49EA0;
-  background-color: #FF4840;
+  color: #2c9eec;
   cursor: pointer;
   position: absolute;
   top: 0;
-  right: 0;
-  background-color: none;
+  right: 10px;
+  background-color: inherit;
 
   transition: all 0.3s;
 
   :hover {
-    background-color: #DD3638;
+    color: #78c2f5;
   }
 `;
 
