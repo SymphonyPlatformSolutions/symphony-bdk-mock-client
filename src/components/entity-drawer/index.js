@@ -88,12 +88,11 @@ class EntityDrawer extends React.Component {
         <Container>
           <ControlPanel>
             <TopContainer>
-              <Title>Select Message Template</Title>
+              <Title>Message Editor</Title>
               <WarningBox hasWarning>
-                <i>
-                  These templates need to be <b>defined</b> in your
-                  GeneralEnricher.js <b>and</b> in its entities.js dependency
-                </i>
+                <span>
+                  Define your templates in <i>GeneralEnricher.js</i> and <i>entities.js</i>
+                </span>
               </WarningBox>
               <DrawerClose onClick={closeHandler} />
             </TopContainer>
@@ -111,7 +110,7 @@ class EntityDrawer extends React.Component {
           </ControlPanel>
           <BottomPanel>
             <SubTitle>Message Data</SubTitle>
-            <div style={{ height: '80%' }}>
+            <div style={{ height: 'calc(100vh - 437px)' }}>
               <Editor
                 name="enricher"
                 value={jsonText}
