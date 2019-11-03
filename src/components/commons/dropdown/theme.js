@@ -237,7 +237,7 @@ export const InputLine = styled.span`
 
 const Label = styled.label`
   position: absolute;
-  top: ${({ menuIsOpen, hasValue }) => (menuIsOpen || hasValue ? '-14px' : '10px')};
+  top: ${({ menuIsOpen, hasValue }) => (menuIsOpen || hasValue ? '-18px' : '10px')};
   font-size: ${({ menuIsOpen, hasValue }) => (menuIsOpen || hasValue ? '12px' : '1em')};
   transition: all 0.2s;
   left: ${({ menuIsOpen, hasValue }) => (menuIsOpen || hasValue ? '2px' : '7px')};

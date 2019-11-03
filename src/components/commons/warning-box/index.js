@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Warning } from 'styled-icons/material';
+import { Warning } from 'styled-icons/icomoon';
 
 const WarningWrapper = styled.div`
   border-radius: 4px;
+  border: 1px solid #2c97e2;
   padding: 0.6rem;
   background-color: #35383E;
   margin: 12px 0;
@@ -12,8 +13,7 @@ const WarningWrapper = styled.div`
 `;
 
 const WarningIcon = styled(Warning)`
-  margin: 0 14px 0 7px;
-  color: #FFC840;
+  margin: 0 7px 0 5px;
 `;
 
 export const WarningBox = (props) => {
@@ -21,7 +21,7 @@ export const WarningBox = (props) => {
 
   return (
     <WarningWrapper>
-      {hasWarning && (<WarningIcon size="30" />)}
+      {hasWarning && (<WarningIcon size={14} color="#2c97e2"/>)}
       {children}
     </WarningWrapper>
   );

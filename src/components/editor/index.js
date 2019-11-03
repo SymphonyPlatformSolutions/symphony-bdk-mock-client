@@ -2,7 +2,7 @@ import React from 'react';
 import AceEditor from 'react-ace';
 import PropTypes from 'prop-types';
 import 'brace/mode/json';
-import 'brace/theme/twilight';
+import 'brace/theme/terminal';
 
 const Editor = (props) => {
   const { onChange, value, name } = props;
@@ -11,11 +11,11 @@ const Editor = (props) => {
     <AceEditor
       placeholder="Placeholder Text"
       mode="json"
-      theme="twilight"
+      theme="terminal"
       name={name}
       onChange={data => onChange(data)}
       fontSize={14}
-      height="550px"
+      height="300px"
       showPrintMargin
       showGutter
       highlightActiveLine
