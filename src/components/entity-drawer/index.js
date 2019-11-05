@@ -65,8 +65,6 @@ class EntityDrawer extends React.Component {
     const { submitHandler } = this.props;
     const { jsonText, selected } = this.state;
 
-    console.log(selected, jsonText);
-
     if (selected.label === RENDER_ALL) {
       Object.keys(ENRICHER_EVENTS).forEach(el => submitHandler(ENRICHER_EVENTS[el].type, {
         id: JSON.stringify(ENRICHER_EVENTS[el].json),
