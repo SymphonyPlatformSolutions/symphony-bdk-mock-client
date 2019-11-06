@@ -43,7 +43,7 @@ const RendererApp = () => {
 
       const replaceableHeights = [...htmlString.matchAll(/<div[^>]*([^-]height:([^;|"|\n]*))(;|")/g)];
       replaceableHeights.forEach((el) => {
-        htmlString = htmlString.replace(el[1], el[1].replace(el[2], `${el[2]} !important; overflow: unset;`));
+        htmlString = htmlString.replace(new RegExp(`${el[1]}[;|"]`), el[1].replace(el[2], `${el[2]} !important; overflow: unset;`));
       });
       // Add clickable event to action
       if (template.data) {
