@@ -60,7 +60,7 @@ const WrapperChatWindow = ({
       </ChatWindowHeaderToolbar>
       <ChatWindownHeaderIconContainer>
         <Title>
-          {icon && <img width={40} height={40} src={icon} />}
+          {icon && <img width={16} height={16} src={icon} />}
           <ChatWindowHeaderTitle>{title}</ChatWindowHeaderTitle>
         </Title>
         <div>
