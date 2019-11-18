@@ -1,6 +1,6 @@
 {
   "name": "@symphonyplatformsolutions/sms-dev-tool-mock-client",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "A Symphony mock client",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "files": [
     "./README.md",
-    "./src/assets/symphony-logo.png",
+    "src/assets/favicon.ico",
     "./dist",
     "./index.js",
     "./webpack.cli.js"

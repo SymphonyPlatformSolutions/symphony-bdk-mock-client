@@ -135,7 +135,7 @@ const WrapperSidenav = (props) => {
 
   const APPS = {
     id: 2,
-    label: 'APPLICATIONS (click here!)',
+    label: 'APPLICATIONS',
     hasAdd: true,
     list: [
       {
@@ -148,8 +148,8 @@ const WrapperSidenav = (props) => {
       {
         id: 1,
         status: null,
-        text: 'Renderer',
-        icon: null,
+        text: 'Message Renderer',
+        icon: 'assets/favicon.ico',
         handler: rendererOpenHandler,
       },
     ],

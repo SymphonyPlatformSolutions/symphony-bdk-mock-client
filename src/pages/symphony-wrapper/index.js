@@ -227,8 +227,9 @@ const SymphonyWrapper = ({ bundle }) => {
           )}
           {isRendererOpen && (
             <WrapperChatWindow
+              icon="/assets/symphony-logo.png"
               hasButtons
-              title="Enricher Test"
+              title="Message Renderer"
               hasFooter
               onChatClosed={() => handleAppWindowChange(false, !isRendererOpen)}
             >
