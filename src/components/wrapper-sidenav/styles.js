@@ -154,7 +154,8 @@ export const SideNavPresenceText = styled.span`
 export const SideNavPresenceIcon = styled.span`
   width: 16px;
   height: 16px;
-  background: ${props => props.url};
+  background-size: contain;
+  background: ${props => props.url} no-repeat;
 `;
 
 export const DrawerButtonContainer = styled.div`
