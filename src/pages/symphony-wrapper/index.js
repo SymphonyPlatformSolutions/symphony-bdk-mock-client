@@ -16,6 +16,8 @@ import {
 let rendererRef;
 let internalPointer;
 
+const THEME_SIZES = ['xsmall', 'small', 'normal', 'large'];
+
 const SymphonyWrapper = ({ bundle }) => {
   const [isEntityDrawerOpened, toggleEntityDrawer] = useState(false);
   const [isDialogDrawerOpened, toggleDialogDrawer] = useState(false);
@@ -168,11 +170,41 @@ const SymphonyWrapper = ({ bundle }) => {
     });
   };
 
+  const changeSize = () => {
+    const currSize = localStorage.getItem('theme-size');
+    const nextSize = currSize
+      ? THEME_SIZES[(THEME_SIZES.findIndex(l => l === currSize) + 1) % THEME_SIZES.length]
+      : THEME_SIZES[3];
+    localStorage.setItem('theme-size', nextSize);
+    setIframeKey(
+      `app.html?queryObj=${encodeURIComponent(
+        JSON.stringify({ page: 'app', cache: Math.random() * 100 }),
+      )}`,
+    );
+    internalPointer = setInterval(() => {
+      if (extensionAppRef.current.contentWindow) {
+        extensionAppRef.current.contentWindow.SYMPHONY = Object.assign(
+          {},
+          window.SYMPHONY,
+        );
+      }
+    }, 1);
+    window.addEventListener('openDialog', ({ detail }) => {
+      setModalOptions({
+        url: detail.url,
+        height: detail.height,
+        width: detail.width,
+      });
+      toggleModalOpen(true);
+    });
+  };
+
   const onExtensionAppLoaded = () => {
     clearInterval(internalPointer);
   };
 
   const appIcon = bundle.iconUrl ? bundle.iconUrl : 'assets/app-icon.png';
+  const currSize = localStorage.getItem('theme-size');
 
   return (
     <Wrapper>
@@ -214,7 +246,9 @@ const SymphonyWrapper = ({ bundle }) => {
               title={bundle.name}
               onChatClosed={() => handleAppWindowChange(true, !isAppOpen)}
               onThemeChanged={changeTheme}
+              onSizeChanged={changeSize}
               hasFooter={false}
+              currSize={currSize || 'normal'}
             >
               {iframeKey && (
                 <ExtensionAppIframe

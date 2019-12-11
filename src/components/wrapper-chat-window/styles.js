@@ -105,6 +105,7 @@ export const IconExternalLink = styled(ExternalLink)`
 export const IconClose = styled(Close)`
   margin-left: 8px;
   cursor: pointer;
+  transition: all 0.3s;
   &:hover {
     color: black;
     transform: scale(1.1);
@@ -114,6 +115,7 @@ export const IconClose = styled(Close)`
 export const IconColorLens = styled(ColorLens)`
   margin-left: 8px;
   cursor: pointer;
+  transition: all 0.3s;
   &:hover {
     color: #29b6f6;
   }
@@ -131,4 +133,13 @@ export const ChatWindowHeaderToolbar = styled.div`
 export const Title = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const SizeButton = styled.p`
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    color: #29b6f6;
+  }
 `;

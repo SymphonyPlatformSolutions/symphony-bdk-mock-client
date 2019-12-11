@@ -22,6 +22,7 @@ import {
   MessageBoxWrapper,
   Separator,
   Title,
+  SizeButton,
 } from './styles';
 import UiButtonSelector from '../ui-button-selector';
 
@@ -48,11 +49,14 @@ const WrapperChatWindow = ({
   hasButtons,
   icon,
   onThemeChanged,
+  onSizeChanged,
+  currSize,
   onChatClosed,
 }) => (
   <ChatWindow>
     <ChatWindowHeader>
       <ChatWindowHeaderToolbar>
+        {onSizeChanged && <SizeButton onClick={onSizeChanged}>{currSize}</SizeButton>}
         {onThemeChanged && <IconColorLens size={20} onClick={onThemeChanged} />}
         <IconPin size={20} />
         <IconExternalLink size={20} />
