@@ -1,5 +1,9 @@
+import React from 'react';
 import styled from 'styled-components';
-import { ChevronUp, Block } from 'styled-icons/boxicons-regular';
+import {
+  ChevronUp, Block, UpArrowAlt, DownArrowAlt,
+  Font,
+} from 'styled-icons/boxicons-regular';
 import { Attachment, MusicNote, ColorLens } from 'styled-icons/material';
 import { Smiley } from 'styled-icons/octicons';
 import { Pin } from 'styled-icons/boxicons-solid';
@@ -143,3 +147,51 @@ export const SizeButton = styled.p`
     color: #29b6f6;
   }
 `;
+const FontButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: all 0.3s;
+  &:hover {
+    color: #29b6f6;
+  }
+  cursor: pointer;
+`;
+const ArrowWrapper = styled.div`
+  margin-left: -7px;
+`;
+export const FontSizePanelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+export const FontSizeButton = ({ isUp, onClick }) => (
+  <FontButtonWrapper onClick={onClick}>
+    <Font size={20} />
+    <ArrowWrapper>
+      {isUp ? <UpArrowAlt size={18} /> : <DownArrowAlt size={18} />}
+    </ArrowWrapper>
+  </FontButtonWrapper>
+);
+
+const Rotator = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease-in-out;
+  transform: translateY(${({ currSizeIndex }) => currSizeIndex * (-19)}px);
+`;
+const RotatorWindow = styled.div`
+  font-weight: 300;
+  height: 18px;
+  overflow: hidden;
+`;
+export const SizeRotator = (props) => {
+  const { sizes, currSizeIndex } = props;
+  return (
+    <RotatorWindow>
+      <Rotator currSizeIndex={currSizeIndex}>
+        {sizes.map(l => (<div key={l}>{l}</div>))}
+      </Rotator>
+    </RotatorWindow>
+  );
+};

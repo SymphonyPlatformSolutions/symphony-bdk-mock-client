@@ -22,7 +22,9 @@ import {
   MessageBoxWrapper,
   Separator,
   Title,
-  SizeButton,
+  FontSizePanelWrapper,
+  FontSizeButton,
+  SizeRotator,
 } from './styles';
 import UiButtonSelector from '../ui-button-selector';
 
@@ -42,6 +44,26 @@ function MessageBox() {
   );
 }
 
+const SizeButtons = (props) => {
+  const { onSizeChanged, sizes, currSizeIndex } = props;
+  return (
+    <FontSizePanelWrapper>
+      <FontSizeButton
+        onClick={() => onSizeChanged(currSizeIndex === 0 ? null : sizes[currSizeIndex - 1])
+        }
+      />
+      <FontSizeButton
+        isUp
+        onClick={() => onSizeChanged(
+          currSizeIndex === sizes.length - 1 ? null : sizes[currSizeIndex + 1],
+        )
+        }
+      />
+      <SizeRotator sizes={sizes} currSizeIndex={currSizeIndex} />
+    </FontSizePanelWrapper>
+  );
+};
+
 const WrapperChatWindow = ({
   children,
   title,
@@ -50,13 +72,20 @@ const WrapperChatWindow = ({
   icon,
   onThemeChanged,
   onSizeChanged,
-  currSize,
+  currSizeIndex,
   onChatClosed,
+  sizes,
 }) => (
   <ChatWindow>
     <ChatWindowHeader>
       <ChatWindowHeaderToolbar>
-        {onSizeChanged && <SizeButton onClick={onSizeChanged}>{currSize}</SizeButton>}
+        {onSizeChanged && (
+          <SizeButtons
+            onSizeChanged={onSizeChanged}
+            sizes={sizes}
+            currSizeIndex={currSizeIndex}
+          />
+        )}
         {onThemeChanged && <IconColorLens size={20} onClick={onThemeChanged} />}
         <IconPin size={20} />
         <IconExternalLink size={20} />

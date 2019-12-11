@@ -38,6 +38,11 @@ const SymphonyWrapper = ({ bundle }) => {
       JSON.stringify({ page: 'app', cache: 111 }),
     )}`,
   );
+  const [currSize, setCurrSize] = useState(
+    window.localStorage.getItem('theme-size') === null
+      ? 'normal'
+      : window.localStorage.getItem('theme-size'),
+  );
 
   const extensionAppRef = useRef();
 
@@ -170,11 +175,10 @@ const SymphonyWrapper = ({ bundle }) => {
     });
   };
 
-  const changeSize = () => {
-    const currSize = localStorage.getItem('theme-size');
-    const nextSize = currSize
-      ? THEME_SIZES[(THEME_SIZES.findIndex(l => l === currSize) + 1) % THEME_SIZES.length]
-      : THEME_SIZES[3];
+  const changeSize = (nextSize) => {
+    if (!nextSize) { return; }
+    setCurrSize(nextSize);
+
     localStorage.setItem('theme-size', nextSize);
     setIframeKey(
       `app.html?queryObj=${encodeURIComponent(
@@ -204,7 +208,6 @@ const SymphonyWrapper = ({ bundle }) => {
   };
 
   const appIcon = bundle.iconUrl ? bundle.iconUrl : 'assets/app-icon.png';
-  const currSize = localStorage.getItem('theme-size');
 
   return (
     <Wrapper>
@@ -247,6 +250,8 @@ const SymphonyWrapper = ({ bundle }) => {
               onChatClosed={() => handleAppWindowChange(true, !isAppOpen)}
               onThemeChanged={changeTheme}
               onSizeChanged={changeSize}
+              sizes={THEME_SIZES}
+              currSizeIndex={THEME_SIZES.findIndex(l => l === currSize)}
               hasFooter={false}
               currSize={currSize || 'normal'}
             >
