@@ -209,11 +209,12 @@ const SYMPHONY_MOCK = {
     hello: () => {
       console.log('Calling Symphony Remote Hello');
       const theme = localStorage.getItem('theme-name');
+      const size = localStorage.getItem('theme-size');
       return new Promise(Resolve => Resolve({
         pod: 1234,
         themeV2: {
           name: theme || 'LIGHT',
-          size: '18px',
+          size: size || 'normal',
         },
       }));
     },
