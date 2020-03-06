@@ -1,5 +1,5 @@
 {
-  "name": "@symphonyplatformsolutions/sms-dev-tool-mock-client",
+  "name": "symphony-sdk-ock-client",
   "version": "1.0.19",
   "description": "A Symphony mock client",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "build:prod": "webpack --config webpack.prod.js"
   },
   "bin": {
-    "sms-dev-tool-mock-client": "index.js"
+    "symphony-sdk-mock-client": "index.js"
   },
   "files": [
     "./README.md",
@@ -19,13 +19,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client.git"
+    "url": "git+https://github.com/SymphonyPlatformSolutions/symphony-sdk-mock-client.git"
   },
-  "author": "Market Solutions",
+  "author": "Symphony",
   "bugs": {
-    "url": "https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client/issues"
+    "url": "https://github.com/SymphonyPlatformSolutions/symphony-sdk-mock-client/issues"
   },
-  "homepage": "https://github.com/SymphonyPlatformSolutions/sms-dev-tool-mock-client#readme",
+  "homepage": "https://github.com/SymphonyPlatformSolutions/symphony-sdk-mock-client#readme",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
