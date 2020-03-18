@@ -1,8 +1,8 @@
-# Symphony Mock Client
+# Symphony BDK Mock Client
 ![Alt text](src/assets/symphony-logo.png?raw=true "Mock Client")
 [![Quality Gate Status](https://sonarqube-dev.symphonymarket.solutions/api/project_badges/measure?project=sms-dev-tool-client-mock&metric=alert_status)](https://sonarqube-dev.symphonymarket.solutions/dashboard?id=sms-dev-tool-client-mock) |
 **Build status**:
-[![CircleCI](https://circleci.com/gh/SymphonyPlatformSolutions/sms-dev-tool-mock-client/tree/master.svg?style=svg&circle-token=65c7cc0be8d286cde915992e18daa81742f20ea0)](https://circleci.com/gh/SymphonyPlatformSolutions/sms-dev-tool-mock-client/tree/master)
+[![CircleCI](https://circleci.com/gh/SymphonyPlatformSolutions/symphony-bdk-mock-client/tree/master.svg?style=svg&circle-token=65c7cc0be8d286cde915992e18daa81742f20ea0)](https://circleci.com/gh/SymphonyPlatformSolutions/symphony-bdk-mock-client/tree/master)
 
 
 ## What you'll need
@@ -14,7 +14,7 @@
 - Then you need to install yarn ```npm install -g yarn```
 
 ## Architecture
-The mock client application uses the [symphony-api.js](https://www.symphony.com/resources/api/v1.0/symphony-api.js)
+The BDK mock client application uses the [symphony-api.js](https://www.symphony.com/resources/api/v1.0/symphony-api.js)
 provided by symphony
 and modify on the fly its inner works so it can be used locally. The resulting object **window.SYMPHONY** available
 on any extension app running inside the mock client, is a mocked version of that file.
@@ -46,7 +46,7 @@ files into your bundle system. like so:
 
 ```jsx harmony
 new CopyWebpackPlugin([
-  { from: './node_modules/sms-dev-tool-mock-client/dist', to: '' },
+  { from: './node_modules/symphony-bdk-mock-client/dist', to: '' },
 ]),
 ```
 
