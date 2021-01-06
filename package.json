@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "asciify-image": "^0.1.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "axios-mock-adapter": "^1.16.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "file-loader": "^4.0.0",
